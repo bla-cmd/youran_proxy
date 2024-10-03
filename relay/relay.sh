@@ -52,13 +52,6 @@ stream {
         server $ip_address:4500;
     }
 
-    upstream 1234_backend {
-        server $ip_address:1234;
-    }
-    
-    upstream 1116_backend {
-        server $ip_address:1116;
-    }
 
     server {
         listen 1701;
@@ -80,22 +73,6 @@ stream {
         listen 4500;
         listen 4500 udp;  # 监听UDP端口
         proxy_pass 4500_backend;
-        proxy_timeout 6000m;
-        proxy_connect_timeout 600s;
-    }
-
-    server {
-        listen 1234;  # 监听TCP端口
-        listen 1234 udp;  # 监听UDP端口
-        proxy_pass 1234_backend;
-        proxy_timeout 6000m;
-        proxy_connect_timeout 600s;
-    }
-
-    server {
-        listen 1116;  # 监听TCP端口
-        listen 1116 udp;  # 监听UDP端口
-        proxy_pass 1116_backend;
         proxy_timeout 6000m;
         proxy_connect_timeout 600s;
     }
