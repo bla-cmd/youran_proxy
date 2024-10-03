@@ -1,0 +1,13 @@
+[Unit]
+Description=ALS Linux Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/als-linux-amd64
+WorkingDirectory=/usr/local/bin
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
