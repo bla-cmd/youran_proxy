@@ -108,7 +108,7 @@ sudo systemctl daemon-reload
 
 # 启动服务 
 echo -e " 正在启动 client.service...${NC}"
-sudo systemctl start client.service 
+sudo systemctl restart client.service 
 
 # 设置服务开机自启动 
 sudo systemctl enable client.service 

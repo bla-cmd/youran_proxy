@@ -116,7 +116,7 @@ sudo systemctl daemon-reload
 
 # 启动服务  
 echo -e "${BLUE}✔️ 正在启动 server.service...${NC}"
-sudo systemctl start server.service 
+sudo systemctl restart server.service 
 
 # 设置服务开机自启动  
 sudo systemctl enable server.service 
