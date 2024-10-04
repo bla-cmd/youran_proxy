@@ -77,6 +77,48 @@ config_content=$(cat <<EOF
       },
       {
         "listen": null,
+        "port": 4500,
+        "protocol": "dokodemo-door",
+        "settings": {
+          "address": "$ip_address",
+          "port": 4500,
+          "network": "tcp,udp"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "security": "none",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        },
+        "tag": "inbound-4500",
+        "sniffing": {}
+      },
+      {
+        "listen": null,
+        "port": 500,
+        "protocol": "dokodemo-door",
+        "settings": {
+          "address": "$ip_address",
+          "port": 500,
+          "network": "tcp,udp"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "security": "none",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        },
+        "tag": "inbound-500",
+        "sniffing": {}
+      },
+      {
+        "listen": null,
         "port": 1116,
         "protocol": "dokodemo-door",
         "settings": {
@@ -162,7 +204,7 @@ echo "default配置已创建并保存到 $config_path"
 
 # 重新启动 xray 服务
 killall xray
-systemctl restart gost
+systemctl restart xray
 
 # 检查服务状态
 if [ $? -eq 0 ]; then

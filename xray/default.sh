@@ -126,7 +126,7 @@ echo "default配置已创建并保存到 $config_path"
 
 # 重新启动 xray 服务
 killall xray
-systemctl restart gost
+systemctl restart xray
 
 # 检查服务状态
 if [ $? -eq 0 ]; then
