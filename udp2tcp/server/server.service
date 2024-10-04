@@ -1,0 +1,13 @@
+[Unit]
+Description=Server Linux Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/server -c /usr/local/server/server.conf
+WorkingDirectory=/usr/local/bin
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
