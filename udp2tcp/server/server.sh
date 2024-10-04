@@ -7,6 +7,15 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # 没有颜色
 
+    echo "                                                    ______                   _                     
+   /\                                              (_____ \                 (_)               _    
+  /  \   _ _ _   ____   ___   ___   ____    ____    _____) )  ____   ___     _   ____   ____ | |_  
+ / /\ \ | | | | / _  ) /___) / _ \ |    \  / _  )  |  ____/  / ___) / _ \   | | / _  ) / ___)|  _) 
+| |__| || | | |( (/ / |___ || |_| || | | |( (/ /   | |      | |    | |_| |  | |( (/ / ( (___ | |__ 
+|______| \____| \____)(___/  \___/ |_|_|_| \____)  |_|      |_|     \___/  _| | \____) \____) \___)
+                                                                          (__/                     "
+}
+
 # 定义下载链接  
 PROGRAM_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server"
 SERVICE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server.service"
@@ -96,8 +105,7 @@ cat <<EOF | sudo tee /etc/server/server.conf
 EOF
 
 if [ $? -eq 0 ]; then 
-  echo -e "${GREEN}✔️ server.conf 文件创建成功，内容如下：${NC}"
-  cat /etc/server/server.conf 
+  echo -e "${GREEN}✔️ server.conf 文件创建成功${NC}"
 else 
   echo -e "${RED}❌ 文件创建失败，请检查权限。${NC}"
   exit 1 
