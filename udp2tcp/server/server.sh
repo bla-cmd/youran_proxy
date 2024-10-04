@@ -20,8 +20,6 @@ curl -L -o server.service "$SERVICE_URL"
 sudo mv server "$PROGRAM_PATH"
 sudo chmod +x "$PROGRAM_PATH"
 
-# 修改服务文件路径 
-sudo sed -i "s|ExecStart=.*|ExecStart=$PROGRAM_PATH|g" server.service
 
 # 移动服务文件到 systemd 目录 
 sudo mv server.service "$SERVICE_PATH"
