@@ -32,7 +32,7 @@ if [ -f "$SERVICE_PATH" ]; then
   echo -e "${YELLOW}⚠️  client.service 已存在，跳过下载。${NC}"
 else 
   # 下载服务文件 
-  echo -e "${BLUE}🔄 正在下载 client.service...${NC}"
+  echo -e "${BLUE}✔️ 正在下载 client.service...${NC}"
   curl -L -o client.service "$SERVICE_URL"
   sudo mv client.service "$SERVICE_PATH"
   echo -e "${GREEN}✔️ client.service 下载并配置完成！${NC}"
@@ -70,7 +70,7 @@ else
 fi 
 
 # 创建 client.conf 并写入内容 
-echo -e "${BLUE}🔄 正在创建 client.conf 文件...${NC}"
+echo -e "${BLUE}✔️ 正在创建 client.conf 文件...${NC}"
 cat <<EOF | sudo tee /etc/client/client.conf
 [{ 
     "listenAddr": ":4500", 
@@ -96,11 +96,11 @@ else
 fi 
 
 # 重新加载 systemd 管理器配置 
-echo -e "${BLUE}🔄 重新加载 systemd 配置...${NC}"
+echo -e "${BLUE}✔️ 重新加载 systemd 配置...${NC}"
 sudo systemctl daemon-reload 
 
 # 启动服务 
-echo -e "${BLUE}🔄 正在启动 client.service...${NC}"
+echo -e " 正在启动 client.service...${NC}"
 sudo systemctl start client.service 
 
 # 设置服务开机自启动 
@@ -108,7 +108,7 @@ sudo systemctl enable client.service
 echo -e "${GREEN}✔️ client.service 设置为开机自启动。${NC}"
 
 # 检查服务状态 
-echo -e "${BLUE}🔄 正在检查服务状态...${NC}"
+echo -e "${BLUE}✔️ 正在检查服务状态...${NC}"
 sudo systemctl status client.service 
 
 # 提示完成 

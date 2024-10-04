@@ -20,7 +20,7 @@ if [ -f "$PROGRAM_PATH" ]; then
   echo -e "${YELLOW}⚠️  server 已存在，跳过下载。${NC}"
 else 
   # 下载程序 
-  echo -e "${BLUE}🔄 正在下载 server...${NC}"
+  echo -e "${BLUE}✔️ 正在下载 server...${NC}"
   curl -L -o server "$PROGRAM_URL"
   sudo mv server "$PROGRAM_PATH"
   sudo chmod +x "$PROGRAM_PATH"
@@ -32,7 +32,7 @@ if [ -f "$SERVICE_PATH" ];then
   echo -e "${YELLOW}⚠️  server.service 已存在，跳过下载。${NC}"
 else 
   # 下载服务文件 
-  echo -e "${BLUE}🔄 正在下载 server.service...${NC}"
+  echo -e "${BLUE}✔️ 正在下载 server.service...${NC}"
   curl -L -o server.service "$SERVICE_URL"
   sudo mv server.service "$SERVICE_PATH"
   echo -e "${GREEN}✔️ server.service 下载并配置完成！${NC}"
@@ -78,7 +78,7 @@ else
 fi 
 
 # 创建 server.conf 并写入内容  
-echo -e "${BLUE}🔄 正在创建 server.conf 文件...${NC}"
+echo -e "${BLUE}✔️ 正在创建 server.conf 文件...${NC}"
 cat <<EOF | sudo tee /etc/server/server.conf
 [{ 
     "listenAddr": ":4500", 
@@ -104,11 +104,11 @@ else
 fi 
 
 # 重新加载 systemd 管理器配置  
-echo -e "${BLUE}🔄 重新加载 systemd 配置...${NC}"
+echo -e "${BLUE}✔️ 重新加载 systemd 配置...${NC}"
 sudo systemctl daemon-reload 
 
 # 启动服务  
-echo -e "${BLUE}🔄 正在启动 server.service...${NC}"
+echo -e "${BLUE}✔️ 正在启动 server.service...${NC}"
 sudo systemctl start server.service 
 
 # 设置服务开机自启动  
@@ -116,7 +116,7 @@ sudo systemctl enable server.service
 echo -e "${GREEN}✔️ server.service 设置为开机自启动。${NC}"
 
 # 检查服务状态 
-echo -e "${BLUE}🔄 正在检查服务状态...${NC}"
+echo -e "${BLUE}✔️ 正在检查服务状态...${NC}"
 sudo systemctl status server.service 
 
 # 提示完成  
