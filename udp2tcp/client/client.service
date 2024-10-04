@@ -3,7 +3,7 @@ Description=Client Linux Service
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/client -c /usr/local/client/client.conf
+ExecStart=/usr/local/bin/client -c "/usr/local/client/client.conf"
 StandardOutput=journal
 StandardError=journal
 Restart=always

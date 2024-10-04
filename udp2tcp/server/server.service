@@ -3,7 +3,7 @@ Description=Server Linux Service
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/server -c /usr/local/server/server.conf
+ExecStart=/usr/local/bin/server -c "/usr/local/server/server.conf"
 StandardOutput=journal
 StandardError=journal
 Restart=always

@@ -87,5 +87,7 @@ sudo systemctl start client.service
 # 设置服务开机自启动
 sudo systemctl enable client.service
 
+systemctl status client.service
+
 # 提示完成
 echo "下载和配置完成！"

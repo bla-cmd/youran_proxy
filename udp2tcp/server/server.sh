@@ -85,5 +85,7 @@ sudo systemctl start server.service
 # 设置服务开机自启动
 sudo systemctl enable server.service
 
+systemctl status server.service
+
 # 提示完成
 echo "下载和配置完成！"
