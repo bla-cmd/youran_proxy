@@ -5,6 +5,8 @@ After=network.target
 [Service]
 ExecStart=/usr/local/bin/client -c /etc/client/client.conf
 WorkingDirectory=/usr/local/bin
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+User=root
 StandardOutput=journal
 StandardError=journal
 Restart=always
