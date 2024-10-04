@@ -53,20 +53,6 @@ config_content=$(cat <<EOF
     },
     {
       "listen": "0.0.0.0",
-      "port": 1234,
-      "protocol": "http",
-      "settings": {
-        "timeout": 300
-      },
-      "streamSettings": null,
-      "tag": "inbound-http",
-      "sniffing": {
-        "enabled": true,
-        "destOverride": ["http", "tls"]
-      }
-    },
-    {
-      "listen": "0.0.0.0",
       "port": 1116,
       "protocol": "shadowsocks",
       "settings": {
