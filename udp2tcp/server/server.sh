@@ -1,32 +1,32 @@
 #!/bin/bash
 
-# 定义下载链接
+# 定义下载链接 
 PROGRAM_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server"
 SERVICE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server.service"
 
-# 定义目标路径
+# 定义目标路径 
 PROGRAM_PATH="/usr/local/bin/server"
 SERVICE_PATH="/etc/systemd/system/server.service"
 
-# 下载程序
+# 下载程序 
 echo "正在下载 server..."
 curl -L -o server "$PROGRAM_URL"
 
-# 下载服务文件
+# 下载服务文件 
 echo "正在下载 server.service..."
 curl -L -o server.service "$SERVICE_URL"
 
-# 移动程序到目标目录并设置可执行权限
+# 移动程序到目标目录并设置可执行权限 
 sudo mv server "$PROGRAM_PATH"
 sudo chmod +x "$PROGRAM_PATH"
 
-# 修改服务文件路径
+# 修改服务文件路径 
 sudo sed -i "s|ExecStart=.*|ExecStart=$PROGRAM_PATH|g" server.service
 
-# 移动服务文件到 systemd 目录
+# 移动服务文件到 systemd 目录 
 sudo mv server.service "$SERVICE_PATH"
 
-# 检查 /etc/server 目录是否存在
+# 检查 /etc/server 目录是否存在 
 if [ ! -d "/etc/server" ]; then
   echo "目录 /etc/server 不存在，正在创建..."
   mkdir -p /etc/server
@@ -40,18 +40,26 @@ else
   echo "目录 /etc/server 已存在。"
 fi
 
-# 提示用户输入IP地址
-read -p "请输入需要转发的IP地址: " ip_address
-
-# 验证输入是否为有效的IP地址
+# 尝试自动获取公网IP地址
+ip_address=$(curl -s http://whatismyip.akamai.com/)
 if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
-  echo "输入的IP地址有效：$ip_address"
+  echo "获取到的公网IP地址为：$ip_address"
 else
-  echo "输入的不是有效的IP地址，请重新运行脚本并输入正确的IP。"
-  exit 1
+  echo "无法自动获取公网IP地址，请手动输入。"
+
+  # 提示用户输入IP地址
+  read -p "请输入需要转发的IP地址: " ip_address
+
+  # 验证输入是否为有效的IP地址
+  if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    echo "输入的IP地址有效：$ip_address"
+  else
+    echo "输入的不是有效的IP地址，请重新运行脚本并输入正确的IP。"
+    exit 1
+  fi
 fi
 
-# 创建 server.conf 并写入内容
+# 创建 server.conf 并写入内容 
 cat <<EOF > /etc/server/server.conf
 [{
     "listenAddr": ":4500",
@@ -76,16 +84,17 @@ else
   exit 1
 fi
 
-# 重新加载 systemd 管理器配置
+# 重新加载 systemd 管理器配置 
 sudo systemctl daemon-reload
 
-# 启动服务
+# 启动服务 
 sudo systemctl start server.service
 
-# 设置服务开机自启动
+# 设置服务开机自启动 
 sudo systemctl enable server.service
 
+# 检查服务状态
 sudo systemctl status server.service
 
-# 提示完成
+# 提示完成 
 echo "下载和配置完成！"
