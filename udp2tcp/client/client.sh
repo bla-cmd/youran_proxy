@@ -27,10 +27,10 @@ sudo sed -i "s|ExecStart=.*|ExecStart=$PROGRAM_PATH|g" client.service
 sudo mv client.service "$SERVICE_PATH"
 
 
-# 检查 /usr/local/client 目录是否存在
-if [ ! -d "/usr/local/client" ]; then
-  echo "目录 /usr/local/client 不存在，正在创建..."
-  mkdir -p /usr/local/client
+# 检查 /etc/client 目录是否存在
+if [ ! -d "/etc/client" ]; then
+  echo "目录 /etc/client 不存在，正在创建..."
+  mkdir -p /etc/client
   if [ $? -eq 0 ]; then
     echo "目录创建成功。"
   else
@@ -38,7 +38,7 @@ if [ ! -d "/usr/local/client" ]; then
     exit 1
   fi
 else
-  echo "目录 /usr/local/client 已存在。"
+  echo "目录 /etc/client 已存在。"
 fi
 
 # 提示用户输入IP地址
@@ -53,7 +53,7 @@ else
 fi
 
 # 创建 client.conf 并写入内容
-cat <<EOF > /usr/local/client/client.conf
+cat <<EOF > /etc/client/client.conf
 [{
     "listenAddr": ":4500",
     "forwardAddr": "$ip_address:4500",
@@ -71,7 +71,7 @@ EOF
 
 if [ $? -eq 0 ]; then
   echo "client.conf 文件创建成功，内容如下："
-  cat /usr/local/client/client.conf
+  cat /etc/client/client.conf
 else
   echo "文件创建失败，请检查权限。"
   exit 1
@@ -87,7 +87,7 @@ sudo systemctl start client.service
 # 设置服务开机自启动
 sudo systemctl enable client.service
 
-systemctl status client.service
+sudo systemctl status client.service
 
 # 提示完成
 echo "下载和配置完成！"

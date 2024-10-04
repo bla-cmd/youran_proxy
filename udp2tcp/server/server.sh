@@ -26,10 +26,10 @@ sudo sed -i "s|ExecStart=.*|ExecStart=$PROGRAM_PATH|g" server.service
 # 移动服务文件到 systemd 目录
 sudo mv server.service "$SERVICE_PATH"
 
-# 检查 /usr/local/server 目录是否存在
-if [ ! -d "/usr/local/server" ]; then
-  echo "目录 /usr/local/server 不存在，正在创建..."
-  mkdir -p /usr/local/server
+# 检查 /etc/server 目录是否存在
+if [ ! -d "/etc/server" ]; then
+  echo "目录 /etc/server 不存在，正在创建..."
+  mkdir -p /etc/server
   if [ $? -eq 0 ]; then
     echo "目录创建成功。"
   else
@@ -37,7 +37,7 @@ if [ ! -d "/usr/local/server" ]; then
     exit 1
   fi
 else
-  echo "目录 /usr/local/server 已存在。"
+  echo "目录 /etc/server 已存在。"
 fi
 
 # 提示用户输入IP地址
@@ -52,7 +52,7 @@ else
 fi
 
 # 创建 server.conf 并写入内容
-cat <<EOF > /usr/local/server/server.conf
+cat <<EOF > /etc/server/server.conf
 [{
     "listenAddr": ":4500",
     "forwardAddr": "$ip_address:4500",
@@ -70,7 +70,7 @@ EOF
 
 if [ $? -eq 0 ]; then
   echo "server.conf 文件创建成功，内容如下："
-  cat /usr/local/server/server.conf
+  cat /etc/server/server.conf
 else
   echo "文件创建失败，请检查权限。"
   exit 1
@@ -85,7 +85,7 @@ sudo systemctl start server.service
 # 设置服务开机自启动
 sudo systemctl enable server.service
 
-systemctl status server.service
+sudo systemctl status server.service
 
 # 提示完成
 echo "下载和配置完成！"
