@@ -373,46 +373,6 @@ config_content=$(cat <<EOF
       }
     },
     {
-      "protocol": "freedom",
-      "settings": {
-        "domainStrategy": "AsIs"
-      },
-      "tag": "outbound-1234-1",
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          }
-        }
-      },
-      "settings": {
-        "address": "36.138.60.153",
-        "port": 1234
-      }
-    },
-    {
-      "protocol": "freedom",
-      "settings": {
-        "domainStrategy": "AsIs"
-      },
-      "tag": "outbound-1234-2",
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          }
-        }
-      },
-      "settings": {
-        "address": "36.138.168.247",
-        "port": 1234
-      }
-    },
-    {
       "protocol": "blackhole",
       "settings": {},
       "tag": "blocked"

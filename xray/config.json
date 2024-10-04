@@ -1,26 +1,77 @@
 {
   "log": null,
   "routing": {
+    "balancers": [
+      {
+        "tag": "loadbalance-1701",
+        "selector": [
+          "outbound-1701-1",
+          "outbound-1701-2"
+        ]
+      },
+      {
+        "tag": "loadbalance-4500",
+        "selector": [
+          "outbound-4500-1",
+          "outbound-4500-2"
+        ]
+      },
+      {
+        "tag": "loadbalance-500",
+        "selector": [
+          "outbound-500-1",
+          "outbound-500-2"
+        ]
+      },
+      {
+        "tag": "loadbalance-1116",
+        "selector": [
+          "outbound-1116-1",
+          "outbound-1116-2"
+        ]
+      },
+      {
+        "tag": "loadbalance-1234",
+        "selector": [
+          "outbound-1234-1",
+          "outbound-1234-2"
+        ]
+      }
+    ],
     "rules": [
       {
-        "inboundTag": [
-          "api"
-        ],
-        "outboundTag": "api",
+        "inboundTag": ["inbound-1701"],
+        "outboundTag": "loadbalance-1701",
         "type": "field"
       },
       {
-        "ip": [
-          "geoip:private"
-        ],
+        "inboundTag": ["inbound-4500"],
+        "outboundTag": "loadbalance-4500",
+        "type": "field"
+      },
+      {
+        "inboundTag": ["inbound-500"],
+        "outboundTag": "loadbalance-500",
+        "type": "field"
+      },
+      {
+        "inboundTag": ["inbound-1116"],
+        "outboundTag": "loadbalance-1116",
+        "type": "field"
+      },
+      {
+        "inboundTag": ["inbound-1234"],
+        "outboundTag": "loadbalance-1234",
+        "type": "field"
+      },
+      {
+        "ip": ["geoip:private"],
         "outboundTag": "blocked",
         "type": "field"
       },
       {
         "outboundTag": "blocked",
-        "protocol": [
-          "bittorrent"
-        ],
+        "protocol": ["bittorrent"],
         "type": "field"
       }
     ]
@@ -43,7 +94,7 @@
       "port": 1701,
       "protocol": "dokodemo-door",
       "settings": {
-        "address": "36.138.60.153",
+        "address": "0.0.0.0",
         "port": 1701,
         "network": "tcp,udp"
       },
@@ -56,28 +107,7 @@
           }
         }
       },
-      "tag": "inbound-1701_1",
-      "sniffing": {}
-    },
-    {
-      "listen": null,
-      "port": 1701,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "36.138.168.247",
-        "port": 1701,
-        "network": "tcp,udp"
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          }
-        }
-      },
-      "tag": "inbound-1701_2",
+      "tag": "inbound-1701",
       "sniffing": {}
     },
     {
@@ -85,7 +115,7 @@
       "port": 4500,
       "protocol": "dokodemo-door",
       "settings": {
-        "address": "36.138.60.153",
+        "address": "0.0.0.0",
         "port": 4500,
         "network": "tcp,udp"
       },
@@ -98,28 +128,7 @@
           }
         }
       },
-      "tag": "inbound-4500_1",
-      "sniffing": {}
-    },
-    {
-      "listen": null,
-      "port": 4500,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "36.138.168.247",
-        "port": 4500,
-        "network": "tcp,udp"
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          }
-        }
-      },
-      "tag": "inbound-4500_2",
+      "tag": "inbound-4500",
       "sniffing": {}
     },
     {
@@ -127,7 +136,7 @@
       "port": 500,
       "protocol": "dokodemo-door",
       "settings": {
-        "address": "36.138.60.153",
+        "address": "0.0.0.0",
         "port": 500,
         "network": "tcp,udp"
       },
@@ -140,28 +149,7 @@
           }
         }
       },
-      "tag": "inbound-500_1",
-      "sniffing": {}
-    },
-    {
-      "listen": null,
-      "port": 500,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "36.138.168.247",
-        "port": 500,
-        "network": "tcp,udp"
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          }
-        }
-      },
-      "tag": "inbound-500_2",
+      "tag": "inbound-500",
       "sniffing": {}
     },
     {
@@ -169,7 +157,7 @@
       "port": 1116,
       "protocol": "dokodemo-door",
       "settings": {
-        "address": "36.138.60.153",
+        "address": "0.0.0.0",
         "port": 1116,
         "network": "tcp,udp"
       },
@@ -182,28 +170,7 @@
           }
         }
       },
-      "tag": "inbound-1116_1",
-      "sniffing": {}
-    },
-    {
-      "listen": null,
-      "port": 1116,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "36.138.168.247",
-        "port": 1116,
-        "network": "tcp,udp"
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          }
-        }
-      },
-      "tag": "inbound-1116_2",
+      "tag": "inbound-1116",
       "sniffing": {}
     },
     {
@@ -211,7 +178,7 @@
       "port": 1234,
       "protocol": "dokodemo-door",
       "settings": {
-        "address": "36.138.60.153",
+        "address": "0.0.0.0",
         "port": 1234,
         "network": "tcp,udp"
       },
@@ -224,35 +191,170 @@
           }
         }
       },
-      "tag": "inbound-1234_1",
-      "sniffing": {}
-    },
-    {
-      "listen": null,
-      "port": 1234,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "36.138.168.247",
-        "port": 1234,
-        "network": "tcp,udp"
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          }
-        }
-      },
-      "tag": "inbound-1234_2",
+      "tag": "inbound-1234",
       "sniffing": {}
     }
   ],
   "outbounds": [
     {
       "protocol": "freedom",
-      "settings": {}
+      "settings": {
+        "domainStrategy": "AsIs"
+      },
+      "tag": "outbound-1701-1",
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "settings": {
+        "address": "36.138.60.153",
+        "port": 1701
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      },
+      "tag": "outbound-1701-2",
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "settings": {
+        "address": "36.138.168.247",
+        "port": 1701
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      },
+      "tag": "outbound-4500-1",
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "settings": {
+        "address": "36.138.60.153",
+        "port": 4500
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      },
+      "tag": "outbound-4500-2",
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "settings": {
+        "address": "36.138.168.247",
+        "port": 4500
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      },
+      "tag": "outbound-500-1",
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "settings": {
+        "address": "36.138.60.153",
+        "port": 500
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      },
+      "tag": "outbound-500-2",
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "settings": {
+        "address": "36.138.168.247",
+        "port": 500
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      },
+      "tag": "outbound-1116-1",
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "settings": {
+        "address": "36.138.60.153",
+        "port": 1116
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      },
+      "tag": "outbound-1116-2",
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "settings": {
+        "address": "36.138.168.247",
+        "port": 1116
+      }
     },
     {
       "protocol": "blackhole",

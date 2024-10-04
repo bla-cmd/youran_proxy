@@ -137,27 +137,6 @@ config_content=$(cat <<EOF
         },
         "tag": "inbound-1116",
         "sniffing": {}
-      },
-      {
-        "listen": null,
-        "port": 1234,
-        "protocol": "dokodemo-door",
-        "settings": {
-          "address": "$ip_address",
-          "port": 1234,
-          "network": "tcp,udp"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        },
-        "tag": "inbound-1234",
-        "sniffing": {}
       }
     ],
     "outbounds": [
