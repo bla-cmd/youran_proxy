@@ -71,7 +71,7 @@ fi
 
 # 创建 client.conf 并写入内容 
 echo -e "${BLUE}🔄 正在创建 client.conf 文件...${NC}"
-cat <<EOF | sudo tee /etc/client/client.conf 
+cat <<EOF | sudo tee /etc/client/client.conf
 [{ 
     "listenAddr": ":4500", 
     "forwardAddr": "$ip_address:4500", 
@@ -85,7 +85,7 @@ cat <<EOF | sudo tee /etc/client/client.conf
     "forwardAddr": "$ip_address:500", 
     "timeout": 60 
 }] 
-EOF 
+EOF
 
 if [ $? -eq 0 ]; then 
   echo -e "${GREEN}✔️ client.conf 文件创建成功，内容如下：${NC}"
