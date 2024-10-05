@@ -61,7 +61,7 @@ config_content=$(cat <<EOF
         "settings": {
           "address": "$ip_address",
           "port": 1116,
-          "network": "tcp,udp"
+          "network": "tcp"
         },
         "streamSettings": {
           "network": "tcp,udp",
