@@ -64,7 +64,7 @@ config_content=$(cat <<EOF
           "network": "tcp"
         },
         "streamSettings": {
-          "network": "tcp,udp",
+          "network": "tcp",
           "security": "none",
           "tcpSettings": {
             "header": {
