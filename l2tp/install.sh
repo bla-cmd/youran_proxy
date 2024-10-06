@@ -115,7 +115,8 @@ ipcp-accept-local
 ipcp-accept-remote
 ms-dns 223.5.5.5
 ms-dns 119.29.29.29
-noauth
+noccp
+auth
 idle 18000
 mtu 1350
 mru 1350
