@@ -83,7 +83,7 @@ conn l2tp-psk-nonat # 另一个连接块，定义 L2TP-PSK 连接的具体设置
     type=transport # 使用传输模式 (transport mode)，这种模式只加密数据的有效负载，不加密整个 IP 数据包头。
     left=%defaultroute # 本地 IP 地址使用默认路由接口上的地址。
     leftid=${IP} # 本地身份标识符，设置为本地的 IP 地址。
-    leftprotoport=17/%any # 定义本地使用的协议和端口号，17 表示 UDP 协议，1701 是 L2TP 使用的端口。
+    leftprotoport=17/1701 # 定义本地使用的协议和端口号，17 表示 UDP 协议，1701 是 L2TP 使用的端口。
     right=%any # 远程对端的 IP 地址，%any 表示可以接受任何远程地址的连接。
     rightprotoport=17/%any # 远程对端的协议和端口号，17 表示 UDP 协议，%any 表示可以接受任何远程端口号。
     dpddelay=120 # Dead Peer Detection (DPD) 的检测间隔时间，设置为 60 秒，每 60 秒发送一次检测包。
