@@ -1,71 +1,28 @@
 #!/bin/bash
 
+# 定义颜色
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
 
-# 定义颜色函数，用于醒目的输出提示
-info() {
-    echo -e "\e[32m$1\e[0m"
-}
-error() {
-    echo -e "\e[31m$1\e[0m"
-}
+# 结束所有 nginx 进程
+echo -e "${GREEN}正在结束所有 nginx 进程...${NC}"
+killall nginx
 
-# 1. 开启IP转发
+# 卸载 nginx 及相关组件
+echo -e "${GREEN}正在卸载 nginx, nginx-common, nginx-extras...${NC}"
+apt remove -y nginx nginx-common nginx-extras
 
-info "======== 检查IP转发状态 ========"
+# 安装 Xray
+echo -e "${GREEN}正在安装 Xray...${NC}"
+bash -c "$(curl -L https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/xray/install-release.sh)" @ install
 
-# 检查IP转发是否已开启
-if sysctl net.ipv4.ip_forward | grep -q '1'; then
-    info "IP转发已开启，无需添加设置"
-else
-    # 添加IP转发设置到 /etc/sysctl.conf
-    echo "net.ipv4.ip_forward=1" | tee -a /etc/sysctl.conf
+# 运行 relay.sh 脚本
+echo -e "${GREEN}正在运行 relay.sh...${NC}"
+bash <(curl -Ls https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/xray/relay.sh)
 
-    if sysctl -w net.ipv4.ip_forward=1 && sysctl -p; then
-        info "IP转发已开启"
-    else
-        error "IP转发开启失败"
-    fi
-fi
+# 运行 udp2tcp client 脚本
+echo -e "${GREEN}正在运行 udp2tcp client 脚本...${NC}"
+bash <(curl -Ls https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/client/client.sh)
 
-
-# 2. 判断系统防火墙并关闭
-info "======== 判断防火墙并关闭 ========"
-
-# 防火墙列表
-firewalls=("ufw" "firewalld")
-firewall_found=false
-
-for firewall in "${firewalls[@]}"; do
-    if command -v "$firewall" &> /dev/null; then
-        firewall_found=true
-        info "检测到 $firewall 防火墙，正在关闭..."
-        if [ "$firewall" == "ufw" ]; then
-            ufw disable && info "ufw防火墙已关闭"
-        elif [ "$firewall" == "firewalld" ]; then
-            systemctl stop firewalld && systemctl disable firewalld && info "firewalld防火墙已关闭"
-        fi
-    fi
-done
-
-if ! $firewall_found; then
-    info "未检测到已启用的防火墙服务"
-fi
-
-# 3. 更新系统包信息
-info "======== 更新包信息 ========"
-if apt update -y; then
-    info "系统包信息已更新"
-else
-    error "系统包信息更新失败"
-fi
-
-# 4. 安装vim和net-tools
-info "======== 安装vim和net-tools ========"
-if apt install -y vim net-tools; then
-    info "vim 和 net-tools 已安装"
-else
-    error "vim 和 net-tools 安装失败"
-fi
-
-
-info "======== 脚本执行完毕 ========"
+echo -e "${GREEN}所有步骤完成！${NC}"

@@ -75,7 +75,7 @@ conn l2tp-psk # 定义一个 L2TP-PSK（预共享密钥）连接配置。
 conn l2tp-psk-nonat # 另一个连接块，定义 L2TP-PSK 连接的具体设置。
     authby=secret # 使用预共享密钥 (PSK) 进行身份验证。
     pfs=no # 禁用完全前向保密 (PFS)，减少加密复杂度和资源开销，提升性能。
-    auto=start # 该连接会在 IPsec 服务启动时自动加载并尝试建立连接。
+    auto=add # 该连接会在 IPsec 服务启动时自动加载并尝试建立连接。
     keyingtries=3 # 在连接失败时重试密钥协商的次数，设置为 3 次重试。
     rekey=yes # 启用密钥重新协商。当密钥有效期到达时，将自动重新协商新的密钥。
     ikelifetime=24h # IKE（Internet Key Exchange）密钥的生存时间，设置为 24 小时，减少频繁的重新协商。
@@ -86,8 +86,8 @@ conn l2tp-psk-nonat # 另一个连接块，定义 L2TP-PSK 连接的具体设置
     leftprotoport=17/1701 # 定义本地使用的协议和端口号，17 表示 UDP 协议，1701 是 L2TP 使用的端口。
     right=%any # 远程对端的 IP 地址，%any 表示可以接受任何远程地址的连接。
     rightprotoport=17/%any # 远程对端的协议和端口号，17 表示 UDP 协议，%any 表示可以接受任何远程端口号。
-    dpddelay=120 # Dead Peer Detection (DPD) 的检测间隔时间，设置为 60 秒，每 60 秒发送一次检测包。
-    dpdtimeout=120 # 如果 60 秒内没有收到远程对端的 DPD 响应，认为对端失联。
+    dpddelay=60 # Dead Peer Detection (DPD) 的检测间隔时间，设置为 60 秒，每 60 秒发送一次检测包。
+    dpdtimeout=60 # 如果 60 秒内没有收到远程对端的 DPD 响应，认为对端失联。
     dpdaction=restart # 在检测到对端失联后，自动重启连接，确保连接可以自动恢复。
 EOF
 
