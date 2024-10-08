@@ -18,6 +18,24 @@ rootness() {
     fi
 }
 
+#开启IP转发
+
+info "======== 检查IP转发状态 ========"
+
+# 检查IP转发是否已开启
+if sysctl net.ipv4.ip_forward | grep -q '1'; then
+    info "IP转发已开启，无需添加设置"
+else
+    # 添加IP转发设置到 /etc/sysctl.conf
+    echo "net.ipv4.ip_forward=1" | tee -a /etc/sysctl.conf
+
+    if sysctl -w net.ipv4.ip_forward=1 && sysctl -p; then
+        info "IP转发已开启"
+    else
+        error "IP转发开启失败"
+    fi
+fi
+
 # 检查 TUN/TAP 设备
 tunavailable() {
     if [[ ! -e /dev/net/tun ]]; then
@@ -160,7 +178,7 @@ iptables -F
 iptables -P INPUT ACCEPT
 iptables -t nat -A POSTROUTING -j MASQUERADE
 
-echo "vpnuser1     l2tpd     hm123456     192.168.43.3" >> /etc/ppp/chap-secrets
+echo "vpnuser1     l2tpd     hm123456     *" >> /etc/ppp/chap-secrets
 echo "root         l2tpd     hm123456     192.168.43.253" >> /etc/ppp/chap-secrets
 
 cat /etc/ppp/chap-secrets

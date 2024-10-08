@@ -23,9 +23,6 @@ nameserver 2400:3200::1
 nameserver 2400:3200:baba::1
 EOF
 
-# 0. 关闭 systemd-resolved
-sudo systemctl disable systemd-resolved
-sudo systemctl stop systemd-resolved
 
 # 1. 开启IP转发
 
