@@ -23,9 +23,6 @@ nameserver 2001:4860:4860::8888
 nameserver 2001:4860:4860::8844
 EOF
 
-# 防止 resolv.conf 被自动覆盖（可选）
-chattr +i /etc/resolv.conf
-info "DNS服务器已修改并锁定"
 
 # 0. 关闭 systemd-resolved
 sudo systemctl disable systemd-resolved
