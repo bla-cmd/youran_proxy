@@ -23,11 +23,6 @@ nameserver 2001:4860:4860::8888
 nameserver 2001:4860:4860::8844
 EOF
 
-
-# 0. 关闭 systemd-resolved
-sudo systemctl disable systemd-resolved
-sudo systemctl stop systemd-resolved
-
 # 1. 开启IP转发
 
 info "======== 检查IP转发状态 ========"
