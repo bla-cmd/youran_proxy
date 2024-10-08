@@ -874,7 +874,7 @@ main() {
       fi
       if ! version_gt "$INSTALL_VERSION" "$CURRENT_VERSION" && [[ "$FORCE" -eq '0' ]]; then
         echo "info: No new version. The current version of Xray is $CURRENT_VERSION ."
-        exit 0
+        # exit 0
       fi
       echo "info: Installing Xray $INSTALL_VERSION for $(uname -m)"
     fi
