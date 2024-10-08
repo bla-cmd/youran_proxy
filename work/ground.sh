@@ -1153,8 +1153,8 @@ version 2.0
 
 config setup
     protostack=netkey
-    nhelpers=4 # 定义使用 4 个额外的 helper 线程来处理加密和解密操作。
-    uniqueids=no # 允许同一个用户（IP地址）发起多个并发的连接。如果设置为 "yes"，旧连接将会在新的连接建立时被终止。
+    nhelpers=8 # 定义使用 8 个额外的 helper 线程来处理加密和解密操作。
+    uniqueids=yes # 允许同一个用户（IP地址）发起多个并发的连接。如果设置为 "yes"，旧连接将会在新的连接建立时被终止。
     interfaces=%defaultroute
     virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!${iprange}.0/24
     
@@ -1168,17 +1168,17 @@ conn l2tp-psk-nonat # 另一个连接块，定义 L2TP-PSK 连接的具体设置
     auto=add # 该连接会在 IPsec 服务启动时自动加载并尝试建立连接。
     keyingtries=3 # 在连接失败时重试密钥协商的次数，设置为 3 次重试。
     rekey=yes # 启用密钥重新协商。当密钥有效期到达时，将自动重新协商新的密钥。
-    ikelifetime=24h # IKE（Internet Key Exchange）密钥的生存时间，设置为 24 小时，减少频繁的重新协商。
-    keylife=24h # IPSec 安全关联 (SA) 的密钥生存时间，设置为 24 小时。
+    ikelifetime=72h # IKE（Internet Key Exchange）密钥的生存时间，设置为 24 小时，减少频繁的重新协商。
+    keylife=72h # IPSec 安全关联 (SA) 的密钥生存时间，设置为 24 小时。
     type=transport # 使用传输模式 (transport mode)，这种模式只加密数据的有效负载，不加密整个 IP 数据包头。
     left=%defaultroute # 本地 IP 地址使用默认路由接口上的地址。
     leftid=${IP} # 本地身份标识符，设置为本地的 IP 地址。
-    leftprotoport=17/1701 # 定义本地使用的协议和端口号，17 表示 UDP 协议，1701 是 L2TP 使用的端口。
+    leftprotoport=17/%any # 定义本地使用的协议和端口号，17 表示 UDP 协议，1701 是 L2TP 使用的端口。
     right=%any # 远程对端的 IP 地址，%any 表示可以接受任何远程地址的连接。
     rightprotoport=17/%any # 远程对端的协议和端口号，17 表示 UDP 协议，%any 表示可以接受任何远程端口号。
     dpddelay=60 # Dead Peer Detection (DPD) 的检测间隔时间，设置为 60 秒，每 60 秒发送一次检测包。
     dpdtimeout=60 # 如果 60 秒内没有收到远程对端的 DPD 响应，认为对端失联。
-    dpdaction=restart # 在检测到对端失联后，自动重启连接，确保连接可以自动恢复。
+    dpdaction=clear # 在检测到对端失联后，自动重启连接，确保连接可以自动恢复。
 EOF
 
     cat > /etc/ipsec.secrets <<EOF
@@ -1205,13 +1205,12 @@ ipcp-accept-local
 ipcp-accept-remote
 ms-dns 223.5.5.5
 ms-dns 119.29.29.29
-noccp
 auth
-idle 18000
-mtu 1350
-mru 1350
+noccp
+mtu 1400
+mru 1400
 nodefaultroute
-connect-delay 2000
+connect-delay 0
 EOF
 
     rm -f /etc/ppp/chap-secrets
