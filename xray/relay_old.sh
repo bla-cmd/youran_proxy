@@ -61,7 +61,7 @@ config_content=$(cat <<EOF
       "settings": {
         "address": "$ip_address",
         "port": 1701,
-        "network": "tcp,udp",
+        "network": "udp",
         "timeout": 600
       },
       "streamSettings": {
@@ -87,7 +87,7 @@ config_content=$(cat <<EOF
       "settings": {
         "address": "$ip_address",
         "port": 4500,
-        "network": "tcp,udp",
+        "network": "udp",
         "timeout": 600
       },
       "streamSettings": {
@@ -113,7 +113,7 @@ config_content=$(cat <<EOF
       "settings": {
         "address": "$ip_address",
         "port": 500,
-        "network": "tcp,udp",
+        "network": "udp",
         "timeout": 600
       },
       "streamSettings": {
