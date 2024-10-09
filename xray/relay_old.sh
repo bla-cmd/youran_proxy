@@ -15,160 +15,179 @@ fi
 # 创建新的 config.json 内容
 config_content=$(cat <<EOF
 {
-    "log": null,
-    "routing": {
-      "rules": [
-        {
-          "inboundTag": [
-            "api"
-          ],
-          "outboundTag": "api",
-          "type": "field"
-        },
-        {
-          "ip": [
-            "geoip:private"
-          ],
-          "outboundTag": "blocked",
-          "type": "field"
-        },
-        {
-          "outboundTag": "blocked",
-          "protocol": [
-            "bittorrent"
-          ],
-          "type": "field"
-        }
-      ]
-    },
-    "dns": null,
-    "inbounds": [
+  "log": null,
+  "routing": {
+    "rules": [
       {
-        "listen": "127.0.0.1",
-        "port": 62789,
-        "protocol": "dokodemo-door",
-        "settings": {
-          "address": "127.0.0.1"
-        },
-        "streamSettings": null,
-        "tag": "api",
-        "sniffing": null
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api",
+        "type": "field"
       },
       {
-        "listen": null,
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "blocked",
+        "type": "field"
+      },
+      {
+        "outboundTag": "blocked",
+        "protocol": [
+          "bittorrent"
+        ],
+        "type": "field"
+      }
+    ]
+  },
+  "dns": null,
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 62789,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "streamSettings": null,
+      "tag": "api",
+      "sniffing": null
+    },
+    {
+      "listen": null,
+      "port": 1701,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "$ip_address",
         "port": 1701,
-        "protocol": "dokodemo-door",
-        "settings": {
-          "address": "$ip_address",
-          "port": 1701,
-          "network": "tcp,udp"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        },
-        "tag": "inbound-1701",
-        "sniffing": {}
+        "network": "tcp,udp",
+        "timeout": 600
       },
-      {
-        "listen": null,
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          },
+          "tcpFastOpen": true,
+          "mux": {
+            "enabled": true
+          }
+        }
+      },
+      "tag": "inbound-1701",
+      "sniffing": {}
+    },
+    {
+      "listen": null,
+      "port": 4500,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "$ip_address",
         "port": 4500,
-        "protocol": "dokodemo-door",
-        "settings": {
-          "address": "$ip_address",
-          "port": 4500,
-          "network": "tcp,udp"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        },
-        "tag": "inbound-4500",
-        "sniffing": {}
+        "network": "tcp,udp",
+        "timeout": 600
       },
-      {
-        "listen": null,
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          },
+          "tcpFastOpen": true,
+          "mux": {
+            "enabled": true
+          }
+        }
+      },
+      "tag": "inbound-4500",
+      "sniffing": {}
+    },
+    {
+      "listen": null,
+      "port": 500,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "$ip_address",
         "port": 500,
-        "protocol": "dokodemo-door",
-        "settings": {
-          "address": "$ip_address",
-          "port": 500,
-          "network": "tcp,udp"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        },
-        "tag": "inbound-500",
-        "sniffing": {}
+        "network": "tcp,udp",
+        "timeout": 600
       },
-      {
-        "listen": null,
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          },
+          "tcpFastOpen": true,
+          "mux": {
+            "enabled": true
+          }
+        }
+      },
+      "tag": "inbound-500",
+      "sniffing": {}
+    },
+    {
+      "listen": null,
+      "port": 1116,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "$ip_address",
         "port": 1116,
-        "protocol": "dokodemo-door",
-        "settings": {
-          "address": "$ip_address",
-          "port": 1116,
-          "network": "tcp,udp"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        },
-        "tag": "inbound-1116",
-        "sniffing": {}
-      }
-    ],
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {}
+        "network": "tcp,udp"
       },
-      {
-        "protocol": "blackhole",
-        "settings": {},
-        "tag": "blocked"
-      }
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          },
+          "tcpFastOpen": true,
+          "mux": {
+            "enabled": true
+          }
+        }
+      },
+      "tag": "inbound-1116",
+      "sniffing": {}
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
+    }
+  ],
+  "transport": null,
+  "policy": {
+    "system": {
+      "statsInboundDownlink": true,
+      "statsInboundUplink": true
+    }
+  },
+  "api": {
+    "services": [
+      "HandlerService",
+      "LoggerService",
+      "StatsService"
     ],
-    "transport": null,
-    "policy": {
-      "system": {
-        "statsInboundDownlink": true,
-        "statsInboundUplink": true
-      }
-    },
-    "api": {
-      "services": [
-        "HandlerService",
-        "LoggerService",
-        "StatsService"
-      ],
-      "tag": "api"
-    },
-    "stats": {},
-    "reverse": null,
-    "fakeDns": null
-  }
+    "tag": "api"
+  },
+  "stats": {},
+  "reverse": null,
+  "fakeDns": null
+}
 EOF
 )
 
