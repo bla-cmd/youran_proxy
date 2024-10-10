@@ -1,13 +1,13 @@
 {
   "listen": "0.0.0.0",
-  "port": 1116,
+  "port": 18080,
   "protocol": "socks",
   "settings": {
     "auth": "password",
     "accounts": [
       {
         "user": "admin",
-        "pass": "123456"
+        "pass": "@User12345"
       }
     ],
     "udp": true,
