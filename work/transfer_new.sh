@@ -1111,6 +1111,7 @@ config_content=$(cat <<EOF
         "address": "$ip_address",
         "port": 1116,
         "network": "tcp,udp"
+        "timeout": 600
       },
       "streamSettings": {
         "network": "tcp",
