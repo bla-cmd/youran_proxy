@@ -1144,7 +1144,6 @@ else
     else
         echo -e "${RED}BBR 启用失败${NC}"
     fi
-fi
 
 
 # 检查 TUN/TAP 设备

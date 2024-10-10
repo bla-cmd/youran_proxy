@@ -1184,3 +1184,54 @@ else
 fi
 
 
+# 颜色输出
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # 无颜色
+
+# 检查是否为 root 用户
+rootness() {
+    if [[ $EUID -ne 0 ]]; then
+        echo -e "${RED}必须使用 root 账号运行!${NC}" 1>&2
+        exit 1
+    fi
+}
+
+
+# 检查IP转发是否已开启
+if sysctl -n net.ipv4.ip_forward | grep -q '1'; then
+    echo -e "${GREEN}IP转发已开启，无需添加设置${NC}"
+else
+    # 添加IP转发设置到 /etc/sysctl.conf
+    if ! grep -q '^net.ipv4.ip_forward=1' /etc/sysctl.conf; then
+        echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+    fi
+
+    # 立即应用设置
+    if sysctl -w net.ipv4.ip_forward=1 && sysctl -p; then
+        echo -e "${GREEN}IP转发已成功开启${NC}"
+    else
+        echo -e "${RED}IP转发开启失败${NC}"
+    fi
+fi
+
+# 检查并启用Google BBR
+if sysctl net.ipv4.tcp_congestion_control | grep -q 'bbr'; then
+    echo -e "${GREEN}BBR 已启用，无需再次设置${NC}"
+else
+    # 启用 BBR
+    if ! grep -q '^net.core.default_qdisc=fq' /etc/sysctl.conf; then
+        echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+    fi
+    if ! grep -q '^net.ipv4.tcp_congestion_control=bbr' /etc/sysctl.conf; then
+        echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+    fi
+
+    # 立即应用 BBR 设置
+    if sysctl -w net.core.default_qdisc=fq && sysctl -w net.ipv4.tcp_congestion_control=bbr && sysctl -p; then
+        echo -e "${GREEN}BBR 已成功启用${NC}"
+    else
+        echo -e "${RED}BBR 启用失败${NC}"
+    fi
+
