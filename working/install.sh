@@ -1352,7 +1352,7 @@ else
   exit 1 
 fi 
 
-nohup gost -L red://:12345?sniffing=true -F "socks5://admin:@youran12345@$ip_address:8090?so_mark=100&timeout=30s" > gost.log 2>&1 &
+nohup gost -L red://:12345 -F "socks5://admin:@youran12345@$ip_address:8090?so_mark=100&timeout=30s" > gost.log 2>&1 &
 
 
 echo "gost 已经在后台运行。"
