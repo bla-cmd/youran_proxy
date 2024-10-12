@@ -1088,6 +1088,87 @@ else
     echo "xray 服务重启失败，请检查配置文件和服务状态。"
 fi
 
+#!/bin/bash
+
+# Check Root User
+
+# If you want to run as another user, please modify $EUID to be owned by this user
+if [[ "$EUID" -ne '0' ]]; then
+    echo "$(tput setaf 1)Error: You must run this script as root!$(tput sgr0)"
+    exit 1
+fi
+
+# Set the desired GitHub repository
+repo="go-gost/gost"
+base_url="https://api.github.com/repos/$repo/releases"
+
+# Function to download and install gost
+install_gost() {
+
+    # Download the binary
+    echo "Downloading gost version $version..."
+    curl -fSL -o gost.tar.gz "https://oss.yonrd.com/gost_v3/gost_3.0.0-nightly.20241002_linux_amd64.tar.gz"
+
+    # Extract and install the binary
+    echo "Installing gost..."
+    tar -xzf gost.tar.gz
+    chmod +x gost
+    mv gost /usr/local/bin/gost
+
+    echo "gost installation completed!"
+}
+
+# 开始安装
+install_gost
+
+# 检查 gost 是否在运行
+if pgrep -x "gost" > /dev/null
+then
+    echo "gost 正在运行，准备终止..."
+    killall gost
+    echo "gost 已终止"
+else
+    echo "gost 未运行，无需终止"
+fi
+
+# 提示用户输入IP地址
+read -p "请输入要转发的IP地址: " ip_address
+
+# 验证输入是否为有效的IP地址 
+if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then 
+  echo -e "${GREEN} 输入的IP地址有效：$ip_address${NC}"
+else 
+  echo -e "${RED} 输入的不是有效的IP地址，请重新运行脚本并输入正确的IP。${NC}"
+  exit 1 
+fi 
+
+nohup gost -L red://:12345 -F "socks5://admin:@youran12345@$ip_address:8090?so_mark=100&timeout=30s" > gost.log 2>&1 &
+
+
+echo "gost 已经在后台运行。"
+
+#!/bin/bash
+# 清理 iptables nat 规则
+iptables -t nat -F
+iptables -t nat -X
+# 获取 eth0 的 IP 地址并将其设置为变量
+SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
+# 创建 GOST 链
+iptables -t nat -N GOST
+# 忽略局域网流量，请根据实际网络环境进行调整
+iptables -t nat -A GOST -d $SERVER_IP -j RETURN
+# 忽略出口流量
+iptables -t nat -A GOST -p tcp -m mark --mark 100 -j RETURN
+# 重定向TCP流量到12345端口
+iptables -t nat -A GOST -p tcp -j REDIRECT --to-ports 12345
+# 拦截局域网流量
+iptables -t nat -A PREROUTING -p tcp -j GOST
+# 拦截本机流量
+iptables -t nat -A OUTPUT -p tcp -j GOST
+# 输出提示
+echo "iptables 规则已设置完毕，忽略局域网流量的 IP 为：$SERVER_IP"
+
+
 
 
 #!/bin/bash
@@ -1298,83 +1379,3 @@ cat /etc/ppp/chap-secrets
 # 重新启动服务
 systemctl restart xl2tpd
 systemctl restart ipsec
-
-
-
-#!/bin/bash
-
-# Check Root User
-
-# If you want to run as another user, please modify $EUID to be owned by this user
-if [[ "$EUID" -ne '0' ]]; then
-    echo "$(tput setaf 1)Error: You must run this script as root!$(tput sgr0)"
-    exit 1
-fi
-
-# Set the desired GitHub repository
-repo="go-gost/gost"
-base_url="https://api.github.com/repos/$repo/releases"
-
-# Function to download and install gost
-install_gost() {
-
-    # Download the binary
-    echo "Downloading gost version $version..."
-    curl -fSL -o gost.tar.gz "https://oss.yonrd.com/gost_v3/gost_3.0.0-nightly.20241002_linux_amd64.tar.gz"
-
-    # Extract and install the binary
-    echo "Installing gost..."
-    tar -xzf gost.tar.gz
-    chmod +x gost
-    mv gost /usr/local/bin/gost
-
-    echo "gost installation completed!"
-}
-
-# 开始安装
-install_gost
-
-# 检查 gost 是否在运行
-if pgrep -x "gost" > /dev/null
-then
-    echo "gost 正在运行，准备终止..."
-    killall gost
-    echo "gost 已终止"
-else
-    echo "gost 未运行，无需终止"
-fi
-
-# 提示用户输入IP地址
-read -p "请输入要转发的IP地址: " ip_address
-
-# 验证输入是否为有效的IP地址 
-if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then 
-  echo -e "${GREEN} 输入的IP地址有效：$ip_address${NC}"
-else 
-  echo -e "${RED} 输入的不是有效的IP地址，请重新运行脚本并输入正确的IP。${NC}"
-  exit 1 
-fi 
-
-nohup gost -L red://:12345 -F "socks5://admin:@youran12345@$ip_address:8090?so_mark=100&timeout=30s" > gost.log 2>&1 &
-
-
-echo "gost 已经在后台运行。"
-
-#!/bin/bash
-
-# 获取 eth0 的 IP 地址并将其设置为变量
-SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
-# 创建 GOST 链
-iptables -t nat -N GOST
-# 忽略局域网流量，请根据实际网络环境进行调整
-iptables -t nat -A GOST -d $SERVER_IP -j RETURN
-# 忽略出口流量
-iptables -t nat -A GOST -p tcp -m mark --mark 100 -j RETURN
-# 重定向TCP流量到12345端口
-iptables -t nat -A GOST -p tcp -j REDIRECT --to-ports 12345
-# 拦截局域网流量
-iptables -t nat -A PREROUTING -p tcp -j GOST
-# 拦截本机流量
-iptables -t nat -A OUTPUT -p tcp -j GOST
-# 输出提示
-echo "iptables 规则已设置完毕，忽略局域网流量的 IP 为：$SERVER_IP"
