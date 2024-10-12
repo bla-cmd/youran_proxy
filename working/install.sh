@@ -1150,7 +1150,6 @@ echo "gost 已经在后台运行。"
 #!/bin/bash
 # 清理 iptables nat 规则
 iptables -t nat -F
-iptables -t nat -X
 # 获取 eth0 的 IP 地址并将其设置为变量
 SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
 # 创建 GOST 链
