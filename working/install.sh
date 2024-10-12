@@ -1260,10 +1260,24 @@ preinstall_l2tp() {
                                                                           (__/                     "
 }
 
-# 安装 L2TP 及相关依赖
+# 检查操作系统类型并执行相应的安装命令
 install_l2tp() {
-    apt -y install ppp strongswan xl2tpd iptables
-    config_install
+    if [ -f /etc/debian_version ]; then
+        echo "检测到 Debian/Ubuntu 系统，正在安装 L2TP 及相关依赖..."
+        apt update
+        apt -y install ppp strongswan xl2tpd iptables
+        config_install
+    elif [ -f /etc/redhat-release ]; then
+        echo "检测到 CentOS/RHEL 系统，正在安装 L2TP 及相关依赖..."
+        yum -y install epel-release
+        yum -y install ppp strongswan xl2tpd iptables-services
+        systemctl enable iptables
+        systemctl start iptables
+        config_install
+    else
+        echo "不支持的操作系统！请手动安装相关依赖。"
+        exit 1
+    fi
 }
 
 # 配置 L2TP/IPsec
