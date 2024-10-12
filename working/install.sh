@@ -1090,6 +1090,8 @@ fi
 
 
 
+#!/bin/bash
+
 # 设置 PATH
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
@@ -1242,8 +1244,8 @@ EOF
     cat > /etc/ppp/options.xl2tpd <<EOF
 ipcp-accept-local
 ipcp-accept-remote
-ms-dns 8.8.8.8
-ms-dns 1.1.1.1
+ms-dns 223.5.5.5
+ms-dns 119.29.29.29
 auth
 noccp
 mtu 1400
@@ -1296,6 +1298,7 @@ cat /etc/ppp/chap-secrets
 # 重新启动服务
 systemctl restart xl2tpd
 systemctl restart ipsec
+
 
 
 #!/bin/bash
