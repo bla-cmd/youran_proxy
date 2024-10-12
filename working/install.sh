@@ -1375,6 +1375,9 @@ iptables -t nat -A GOST -d $SERVER_IP -j RETURN
 # 忽略出口流量
 iptables -t nat -A GOST -p tcp -m mark --mark 100 -j RETURN
 
+# 忽略 DNS 流量 (udp 协议的 53 端口)
+iptables -t nat -A GOST -p udp --dport 53 -j RETURN
+
 # 重定向 TCP 流量到 12345 端口
 iptables -t nat -A GOST -p tcp -j REDIRECT --to-ports 12345
 
