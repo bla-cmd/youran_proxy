@@ -1300,36 +1300,6 @@ systemctl restart ipsec
 
 #!/bin/bash
 
-# 获取 eth0 的 IP 地址并将其设置为变量
-SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
-
-# 清理 iptables nat 规则
-iptables -t nat -F
-iptables -t nat -X
-
-# 创建 GOST 链
-iptables -t nat -N GOST
-
-# 忽略局域网流量，请根据实际网络环境进行调整
-iptables -t nat -A GOST -d $SERVER_IP -j RETURN
-
-# 忽略出口流量
-iptables -t nat -A GOST -p tcp -m mark --mark 100 -j RETURN
-
-# 重定向 TCP 流量到 12345 端口
-iptables -t nat -A GOST -p tcp -j REDIRECT --to-ports 12345
-
-# 拦截局域网流量
-iptables -t nat -A PREROUTING -p tcp -j GOST
-
-# 拦截本机流量
-iptables -t nat -A OUTPUT -p tcp -j GOST
-
-# 输出提示
-echo "iptables 规则已设置完毕，忽略局域网流量的 IP 为：$SERVER_IP"
-
-#!/bin/bash
-
 # Check Root User
 
 # If you want to run as another user, please modify $EUID to be owned by this user
@@ -1386,3 +1356,33 @@ nohup gost -L red://:12345?sniffing=true -F "socks5://admin:@youran12345@$ip_add
 
 
 echo "gost 已经在后台运行。"
+
+#!/bin/bash
+
+# 获取 eth0 的 IP 地址并将其设置为变量
+SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
+
+# 清理 iptables nat 规则
+iptables -t nat -F
+iptables -t nat -X
+
+# 创建 GOST 链
+iptables -t nat -N GOST
+
+# 忽略局域网流量，请根据实际网络环境进行调整
+iptables -t nat -A GOST -d $SERVER_IP -j RETURN
+
+# 忽略出口流量
+iptables -t nat -A GOST -p tcp -m mark --mark 100 -j RETURN
+
+# 重定向 TCP 流量到 12345 端口
+iptables -t nat -A GOST -p tcp -j REDIRECT --to-ports 12345
+
+# 拦截局域网流量
+iptables -t nat -A PREROUTING -p tcp -j GOST
+
+# 拦截本机流量
+iptables -t nat -A OUTPUT -p tcp -j GOST
+
+# 输出提示
+echo "iptables 规则已设置完毕，忽略局域网流量的 IP 为：$SERVER_IP"
