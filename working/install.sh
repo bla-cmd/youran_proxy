@@ -1269,8 +1269,8 @@ install_l2tp() {
         config_install
     elif [ -f /etc/redhat-release ]; then
         echo "检测到 CentOS/RHEL 系统，正在安装 L2TP 及相关依赖..."
-        yum -y install epel-release
-        yum -y install ppp strongswan xl2tpd iptables-services
+        yum -y install epel-*
+        yum -y install ppp libreswan xl2tpd iptables-services iptables
         systemctl enable iptables
         systemctl start iptables
         config_install
