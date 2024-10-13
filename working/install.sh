@@ -1149,25 +1149,47 @@ nohup gost -L red://:12345 -F "socks5://admin:@youran12345@$ip_address:8090?so_m
 
 echo "gost 已经在后台运行。"
 
-#!/bin/bash
-# 清理 iptables nat 规则
-iptables -t nat -F
 # 获取 eth0 的 IP 地址并将其设置为变量
 SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
+
+# 获取 m.parso.org 的 IP 地址
+PARSO_IP=$(dig +short m.parso.org | tail -n 1)
+
+# 清理 iptables nat 规则
+iptables -t nat -F
+iptables -t nat -X
+
 # 创建 GOST 链
 iptables -t nat -N GOST
+
 # 忽略局域网流量，请根据实际网络环境进行调整
 iptables -t nat -A GOST -d $SERVER_IP -j RETURN
+
+# 忽略 m.parso.org 的流量
+if [ -n "$PARSO_IP" ]; then
+    iptables -t nat -A GOST -d $PARSO_IP -j RETURN
+    echo "已放行 m.parso.org 的 IP：$PARSO_IP"
+else
+    echo "无法解析 m.parso.org 的 IP，未添加放行规则"
+fi
+
 # 忽略出口流量
 iptables -t nat -A GOST -p tcp -m mark --mark 100 -j RETURN
-# 重定向TCP流量到12345端口
+
+# 忽略 DNS 流量 (udp 协议的 53 端口)
+iptables -t nat -A GOST -p udp --dport 53 -j RETURN
+
+# 重定向 TCP 流量到 12345 端口
 iptables -t nat -A GOST -p tcp -j REDIRECT --to-ports 12345
+
 # 拦截局域网流量
 iptables -t nat -A PREROUTING -p tcp -j GOST
+
 # 拦截本机流量
 iptables -t nat -A OUTPUT -p tcp -j GOST
+
 # 输出提示
-echo "iptables 规则已设置完毕，忽略局域网流量的 IP 为：$SERVER_IP"
+echo 
 
 
 
