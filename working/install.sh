@@ -1149,12 +1149,25 @@ nohup gost -L red://:12345 -F "socks5://admin:@youran12345@$ip_address:8090?so_m
 
 echo "gost 已经在后台运行。"
 
+#!/bin/bash
+
+# 检查操作系统类型
+if [ -f /etc/debian_version ]; then
+    OS="Debian/Ubuntu"
+    INSTALL_PERSISTENT="iptables-persistent"
+elif [ -f /etc/redhat-release ]; then
+    OS="CentOS/RHEL"
+    INSTALL_PERSISTENT=""
+else
+    echo "不支持的操作系统！"
+    exit 1
+fi
+
 # 获取 eth0 的 IP 地址并将其设置为变量
 SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
 
 # 获取 m.parso.org 的 IP 地址
 PARSO_IP=$(getent hosts m.parso.org | awk '{ print $1 }')
-
 
 # 清理 iptables nat 规则
 iptables -t nat -F
@@ -1174,6 +1187,9 @@ else
     echo "无法解析 m.parso.org 的 IP，未添加放行规则"
 fi
 
+# 忽略 SSH 流量 (22端口)
+iptables -t nat -A GOST -p tcp --dport 22 -j RETURN
+
 # 忽略出口流量
 iptables -t nat -A GOST -p tcp -m mark --mark 100 -j RETURN
 
@@ -1190,7 +1206,32 @@ iptables -t nat -A PREROUTING -p tcp -j GOST
 iptables -t nat -A OUTPUT -p tcp -j GOST
 
 # 输出提示
-echo 
+echo "iptables 规则已设置完毕，忽略局域网流量的 IP 为：$SERVER_IP"
+
+# 保存 iptables 规则
+echo "正在保存 iptables 规则..."
+
+if [[ "$OS" == "Debian/Ubuntu" ]]; then
+    # 在 Debian/Ubuntu 上安装 iptables-persistent 并保存规则
+    echo "操作系统检测为 $OS，使用 iptables-persistent 保存规则"
+    sudo apt update
+    sudo apt install -y iptables-persistent
+    sudo netfilter-persistent save
+    echo "iptables 规则已保存"
+    
+elif [[ "$OS" == "CentOS/RHEL" ]]; then
+    # 在 CentOS/RHEL 上保存 iptables 规则
+    echo "操作系统检测为 $OS，使用 iptables 服务保存规则"
+    sudo service iptables save
+    echo "iptables 规则已保存"
+
+    # 确保 iptables 在系统启动时自动加载
+    sudo systemctl enable iptables
+    sudo systemctl start iptables
+fi
+
+echo "iptables 规则设置并保存完毕。"
+
 
 
 
