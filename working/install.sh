@@ -1153,7 +1153,8 @@ echo "gost 已经在后台运行。"
 SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
 
 # 获取 m.parso.org 的 IP 地址
-PARSO_IP=$(dig +short m.parso.org | tail -n 1)
+PARSO_IP=$(getent hosts m.parso.org | awk '{ print $1 }')
+
 
 # 清理 iptables nat 规则
 iptables -t nat -F
