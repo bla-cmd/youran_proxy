@@ -1142,7 +1142,7 @@ else
   exit 1 
 fi 
 
-nohup gost -L red://:12345 -F "socks5://admin:@youran12345@$ip_address:8090?so_mark=100&timeout=30s" > /dev/null 2>&1 &
+nohup gost -L red://:12345?ttl=30s -F "socks5://admin:@youran12345@$ip_address:8090?so_mark=100&timeout=30s" > /dev/null 2>&1 &
 # nohup gost -L red://:12345 -F "socks5://admin:@youran12345@36.213.54.67:8090?so_mark=100&timeout=30s" > /dev/null 2>&1 &
 
 
