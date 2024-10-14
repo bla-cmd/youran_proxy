@@ -12,6 +12,29 @@ else
     exit 1
 fi
 
+# 检查 IPv6 是否已禁用
+if sysctl -n net.ipv6.conf.all.disable_ipv6 | grep -q '1'; then
+    echo -e "${GREEN}IPv6 已禁用，无需再次设置${NC}"
+else
+    # 禁用 IPv6 并将其写入 /etc/sysctl.conf
+    if ! grep -q '^net.ipv6.conf.all.disable_ipv6=1' /etc/sysctl.conf; then
+        echo "net.ipv6.conf.all.disable_ipv6=1" >> /etc/sysctl.conf
+    fi
+    if ! grep -q '^net.ipv6.conf.default.disable_ipv6=1' /etc/sysctl.conf; then
+        echo "net.ipv6.conf.default.disable_ipv6=1" >> /etc/sysctl.conf
+    fi
+    if ! grep -q '^net.ipv6.conf.lo.disable_ipv6=1' /etc/sysctl.conf; then
+        echo "net.ipv6.conf.lo.disable_ipv6=1" >> /etc/sysctl.conf
+    fi
+
+    # 立即应用禁用 IPv6 设置
+    if sysctl -w net.ipv6.conf.all.disable_ipv6=1 && sysctl -w net.ipv6.conf.default.disable_ipv6=1 && sysctl -w net.ipv6.conf.lo.disable_ipv6=1 && sysctl -p; then
+        echo -e "${GREEN}IPv6 已成功禁用并应用${NC}"
+    else
+        echo -e "${RED}禁用 IPv6 失败${NC}"
+    fi
+
+
 # 获取 eth0 的 IP 地址并将其设置为变量
 SERVER_IP=$(ip -o -f inet addr show eth0 | awk '/scope global/ {print $4}')
 
