@@ -33,6 +33,9 @@ else
     else
         echo -e "${RED}禁用 IPv6 失败${NC}"
     fi
+fi
+
+
 
 
 # 获取 eth0 的 IP 地址并将其设置为变量
