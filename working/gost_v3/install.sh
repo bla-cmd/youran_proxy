@@ -57,7 +57,7 @@ if [ ! -d "/etc/gost" ]; then
     exit 1 
   fi 
 else 
-  echo -e "${YELLOW}??  目录 /etc/gost 已存在。${NC}"
+  echo -e "${YELLOW}  目录 /etc/gost 已存在。${NC}"
 fi 
 
 # 检查 gost.yaml 是否存在，存在则删除 
@@ -81,31 +81,35 @@ fi
 echo -e "${BLUE} 正在创建 gost.yaml 文件...${NC}"
 cat <<EOF | sudo tee /etc/gost/gost.yaml
 services: 
-  - name: service-0 
-    addr: :12345 
-    handler: 
-      type: red 
-      chain: chain-0 
+- name: service-0 
+  addr: ":12345" 
+  handler: 
+    type: red 
+    chain: chain-0 
     metadata: 
-      sniffing: true 
+      sniffing: true
+      ttl: 30s
   listener: 
     type: red 
 
 chains: 
-  - name: chain-0 
-    hops: 
-      - name: hop-0 
-        sockopts: 
-          mark: 100   
-        nodes: 
-          - name: node-0 
-            addr: $ip_address:8090  # 这里是你的socks5代理服务器地址
-            connector: 
-              type: socks5  # 使用 socks5 作为连接器类型
-              username: "admin"  # 代理的用户名
-              password: "@youran12345"  # 代理的密码
-            dialer: 
-              type: tcp
+- name: chain-0 
+  hops: 
+  - name: hop-0 
+    sockopts: 
+        mark: 100   
+    nodes: 
+    - name: node-0 
+      addr: "$ip_address:8090"  # 确保代理服务器的地址使用引号
+      connector: 
+        type: socks5  # 将连接器类型修改为 socks5
+        metadata:
+        auth:
+            username: "admin"  # 代理用户名
+            password: "@youran12345"  # 代理密码
+      dialer: 
+        type: tcp  # 保留 tcp 作为拨号类型
+
 
 EOF
 
