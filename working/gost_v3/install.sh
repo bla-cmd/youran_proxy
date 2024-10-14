@@ -124,6 +124,16 @@ fi
 echo -e "${BLUE} 重新加载 systemd 配置...${NC}"
 sudo systemctl daemon-reload 
 
+# 检查 gost 是否在运行
+if pgrep -x "gost" > /dev/null
+then
+    echo "gost 正在运行，准备终止..."
+    killall gost
+    echo "gost 已终止"
+else
+    echo "gost 未运行，无需终止"
+fi
+
 # 启动服务 
 echo -e " 正在启动 gost.service...${NC}"
 sudo systemctl restart gost.service 
