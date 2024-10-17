@@ -78,20 +78,20 @@ fi
 if [ ! -d "/etc/xray" ]; then 
   echo -e "${BLUE} 目录 /etc/xray 不存在，正在创建...${NC}"
   sudo mkdir -p /etc/xray
-  if [ $  -eq 0 ]; then 
+  if [ $? -eq 0 ]; then 
     echo -e "${GREEN} 目录创建成功。${NC}"
   else 
-    echo -e "${RED}  目录创建失败，请检查权限。${NC}"
+    echo -e "${RED} 目录创建失败，请检查权限。${NC}"
     exit 1 
   fi 
 else 
-  echo -e "${YELLOW}  目录 /etc/xray 已存在。${NC}"
+  echo -e "${YELLOW} 目录 /etc/xray 已存在。${NC}"
 fi 
 
-# 检查 xray.conf 是否存在，存在则删除 
-if [ -f "/etc/xray/xray.conf" ]; then 
-  echo -e "${YELLOW}  xray.conf 已存在，正在删除旧文件...${NC}"
-  sudo rm /etc/xray/xray.conf
+# 检查 xray.json 是否存在，存在则删除 
+if [ -f "/etc/xray/xray.json" ]; then 
+  echo -e "${YELLOW}  xray.json 已存在，正在删除旧文件...${NC}"
+  sudo rm /etc/xray/xray.json
 fi 
 
 # 提示用户输入IP地址 
