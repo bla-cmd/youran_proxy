@@ -284,10 +284,10 @@ cat <<EOF | sudo tee /etc/xray/xray.json
 }
 EOF
 
-if [ $  -eq 0 ]; then 
-  echo -e "${GREEN} xray.conf 文件创建成功${NC}"
+if [ $? -eq 0 ]; then 
+  echo -e "${GREEN} xray.json 文件创建成功${NC}"
 else 
-  echo -e "${RED}  文件创建失败，请检查权限。${NC}"
+  echo -e "${RED} 文件创建失败，请检查权限。${NC}"
   exit 1 
 fi 
 
