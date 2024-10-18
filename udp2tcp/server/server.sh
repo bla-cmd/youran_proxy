@@ -67,23 +67,24 @@ if [ -f "/etc/server/server.conf" ]; then
 fi 
 
 # 尝试自动获取公网IP地址
-ip_address=$(curl -s http://whatismyip.akamai.com/) 
-if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then 
-  echo -e "${GREEN}✔️ 获取到的公网IP地址为：$ip_address${NC}"
-else 
-  echo -e "${RED}❌ 无法自动获取公网IP地址，请手动输入。${NC}"
-
-  # 提示用户输入IP地址
-  read -p "请输入需要转发的IP地址: " ip_address
-
-  # 验证输入是否为有效的IP地址
-  if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then 
-    echo -e "${GREEN}✔️ 输入的IP地址有效：$ip_address${NC}"
-  else 
-    echo -e "${RED}❌ 输入的不是有效的IP地址，请重新运行脚本并输入正确的IP。${NC}"
-    exit 1 
-  fi 
-fi 
+ip_address=$(curl -s http://ifconfig.me)  
+if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then  
+  echo -e "${GREEN} 获取到的公网IP地址为：$ip_address${NC}" 
+else  
+  echo -e "${RED} 无法自动获取公网IP地址，请手动输入。${NC}"
+ 
+  # 提示用户输入IP地址 
+  read -p "请输入需要转发的IP地址: " ip_address 
+ 
+  # 验证输入是否为有效的IP地址 
+  if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then  
+    echo -e "${GREEN} 输入的IP地址有效：$ip_address${NC}" 
+  else  
+    echo -e "${RED} 输入的不是有效的IP地址，请重新运行脚本并输入正确的IP。${NC}" 
+    exit 1  
+  fi  
+fi
+ 
 
 # 创建 server.conf 并写入内容  
 echo -e "${BLUE}✔️ 正在创建 server.conf 文件...${NC}"
