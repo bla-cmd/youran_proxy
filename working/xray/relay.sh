@@ -149,120 +149,47 @@ cat <<EOF | sudo tee /etc/xray/xray.json
       "sniffing": null
     },
     {
-      "listen": null,
-      "port": 1701,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "$ip_address",
-        "port": 1701,
-        "network": "udp",
-        "timeout": 600
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          },
-          "tcpFastOpen": true,
-          "mux": {
-            "enabled": true
-          }
-        }
-      },
-      "tag": "inbound-1701",
-      "sniffing": {}
-    },
-    {
-      "listen": null,
-      "port": 4500,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "$ip_address",
-        "port": 4500,
-        "network": "udp",
-        "timeout": 600
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          },
-          "tcpFastOpen": true,
-          "mux": {
-            "enabled": true
-          }
-        }
-      },
-      "tag": "inbound-4500",
-      "sniffing": {}
-    },
-    {
-      "listen": null,
-      "port": 500,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "$ip_address",
-        "port": 500,
-        "network": "udp",
-        "timeout": 600
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          },
-          "tcpFastOpen": true,
-          "mux": {
-            "enabled": true
-          }
-        }
-      },
-      "tag": "inbound-500",
-      "sniffing": {}
-    },
-    {
-      "listen": null,
+      "listen": "0.0.0.0",
       "port": 1116,
-      "protocol": "dokodemo-door",
+      "protocol": "shadowsocks",
       "settings": {
-        "address": "$ip_address",
-        "port": 1116,
+        "method": "aes-256-gcm",
+        "password": "112233",
         "network": "tcp,udp"
       },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          },
-          "tcpFastOpen": true,
-          "mux": {
-            "enabled": true
-          }
-        }
-      },
-      "tag": "inbound-1116",
-      "sniffing": {}
+      "streamSettings": null,
+      "tag": "inbound-ss",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
     }
   ],
   "outbounds": [
-    {
-      "protocol": "freedom",
-      "settings": {}
+  {
+    "protocol": "shadowsocks",
+    "settings": {
+      "servers": [
+        {
+          "address": "$ip_address",
+          "port": 1116,
+          "method": "aes-256-gcm",
+          "password": "112233"
+        }
+      ]
     },
-    {
-      "protocol": "blackhole",
-      "settings": {},
-      "tag": "blocked"
-    }
-  ],
+    "tag": "proxy"
+  },
+  {
+    "protocol": "freedom",
+    "settings": {}
+  },
+  {
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
+  }
+],
   "transport": null,
   "policy": {
     "system": {
