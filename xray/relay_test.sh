@@ -250,3 +250,8 @@ sudo systemctl status client.service
 
 # 提示完成 
 echo -e "${GREEN}?? 下载和配置完成！${NC}"
+
+sudo rm /etc/iptables/rules.v4  # 删除IPv4的保存规则
+sudo rm /etc/iptables/rules.v6  # 删除IPv6的保存规则
+sudo iptables -t nat -F # 清除NAT表中的规则
+sudo iptables -t nat -X # 删除NAT表中的自定义链
