@@ -109,97 +109,106 @@ fi
 echo -e "${BLUE} 正在创建 xray.json 文件...${NC}"
 cat <<EOF | sudo tee /etc/xray/xray.json
 {
-    "log": null,
-    "routing": {
-      "rules": [
+  "log": null,
+  "routing": {
+    "rules": [
+      {
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api",
+        "type": "field"
+      },
+      {
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "blocked",
+        "type": "field"
+      },
+      {
+        "outboundTag": "blocked",
+        "protocol": [
+          "bittorrent"
+        ],
+        "type": "field"
+      }
+    ]
+  },
+  "dns": null,
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 62789,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "streamSettings": null,
+      "tag": "api",
+      "sniffing": null
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 1116,
+      "protocol": "shadowsocks",
+      "settings": {
+        "method": "aes-256-gcm",
+        "password": "112233",
+        "network": "tcp,udp"
+      },
+      "streamSettings": null,
+      "tag": "inbound-ss",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    }
+  ],
+  "outbounds": [
+  {
+    "protocol": "shadowsocks",
+    "settings": {
+      "servers": [
         {
-          "inboundTag": [
-            "api"
-          ],
-          "outboundTag": "api",
-          "type": "field"
-        },
-        {
-          "ip": [
-            "geoip:private"
-          ],
-          "outboundTag": "blocked",
-          "type": "field"
-        },
-        {
-          "outboundTag": "blocked",
-          "protocol": [
-            "bittorrent"
-          ],
-          "type": "field"
+          "address": "$ip_address",
+          "port": 1116,
+          "method": "aes-256-gcm",
+          "password": "112233"
         }
       ]
     },
-    "dns": null,
-    "inbounds": [
-      {
-        "listen": "127.0.0.1",
-        "port": 62789,
-        "protocol": "dokodemo-door",
-        "settings": {
-          "address": "127.0.0.1"
-        },
-        "streamSettings": null,
-        "tag": "api",
-        "sniffing": null
-      },
-      {
-        "listen": null,
-        "port": 1116,
-        "protocol": "dokodemo-door",
-        "settings": {
-          "address": "$ip_address",
-          "port": 1116,
-          "network": "tcp,udp"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        },
-        "tag": "inbound-1116",
-        "sniffing": {}
-      }
-    ],
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {}
-      },
-      {
-        "protocol": "blackhole",
-        "settings": {},
-        "tag": "blocked"
-      }
-    ],
-    "transport": null,
-    "policy": {
-      "system": {
-        "statsInboundDownlink": true,
-        "statsInboundUplink": true
-      }
-    },
-    "api": {
-      "services": [
-        "HandlerService",
-        "LoggerService",
-        "StatsService"
-      ],
-      "tag": "api"
-    },
-    "stats": {},
-    "reverse": null,
-    "fakeDns": null
+    "tag": "proxy"
+  },
+  {
+    "protocol": "freedom",
+    "settings": {}
+  },
+  {
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
   }
+],
+  "transport": null,
+  "policy": {
+    "system": {
+      "statsInboundDownlink": true,
+      "statsInboundUplink": true
+    }
+  },
+  "api": {
+    "services": [
+      "HandlerService",
+      "LoggerService",
+      "StatsService"
+    ],
+    "tag": "api"
+  },
+  "stats": {},
+  "reverse": null,
+  "fakeDns": null
+}
 EOF
 
 if [ $? -eq 0 ]; then 
@@ -220,10 +229,6 @@ sudo systemctl restart xray.service
 # 设置服务开机自启动 
 sudo systemctl enable xray.service 
 echo -e "${GREEN} xray.service 设置为开机自启动。${NC}"
-
-# 检查服务状态 
-echo -e "${BLUE} 正在检查服务状态...${NC}"
-sudo systemctl status xray.service 
 
 # 提示完成 
 echo -e "${GREEN} 下载和配置完成！${NC}"
@@ -332,10 +337,6 @@ sudo systemctl restart client.service
 # 设置服务开机自启动 
 sudo systemctl enable client.service 
 echo -e "${GREEN} client.service 设置为开机自启动。${NC}"
-
-# 检查服务状态 
-echo -e "${BLUE} 正在检查服务状态...${NC}"
-sudo systemctl status client.service 
 
 # 提示完成 
 echo -e "${GREEN} 下载和配置完成！${NC}"
