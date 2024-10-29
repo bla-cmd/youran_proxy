@@ -300,7 +300,7 @@ fi
  
 
 # 创建 server.conf 并写入内容  
-echo -e "${BLUE}?? 正在创建 server.conf 文件...${NC}"
+echo -e "${BLUE} 正在创建 server.conf 文件...${NC}"
 cat <<EOF | sudo tee /etc/server/server.conf
 [{ 
     "listenAddr": ":4500", 
