@@ -52,8 +52,9 @@ else
 fi 
 
 # 检查 geosite.dat 是否已经存在 
-if [ -f "$GEOSITE_PATH" ]; then 
-  echo -e "${YELLOW}  geosite.dat 已存在，跳过下载。${NC}"
+if [ -f "$SERVICE_PATH" ]; then
+  echo -e "${YELLOW}xray.service 已存在，删除旧文件...${NC}"
+  sudo rm -f "$SERVICE_PATH"
 else 
   # 下载程序 
   echo -e "${BLUE} 正在下载 geosite.dat...${NC}"
