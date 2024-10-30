@@ -1,0 +1,15 @@
+[Unit]
+Description=youran Linux Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/youran run -config /etc/youran/youran.json
+WorkingDirectory=/usr/local/bin
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+User=root
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -16,27 +16,70 @@ NC='\033[0m' # 没有颜色
                                                                           (__/                     "
 
 # 定义下载链接 
-PROGRAM_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/xray/xray"
-GEOIP_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/xray/geoip.dat"
-GEOSITE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/xray/geosite.dat"
-SERVICE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/xray/xray.service"
+PROGRAM_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran"
+GEOIP_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geoip.dat"
+GEOSITE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geosite.dat"
+SERVICE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran.service"
 
 # 定义目标路径 
-PROGRAM_PATH="/usr/local/bin/xray"
+PROGRAM_PATH="/usr/local/bin/youran"
 GEOIP_PATH="/usr/local/bin/geoip.dat"
 GEOSITE_PATH="/usr/local/bin/geosite.dat"
-SERVICE_PATH="/etc/systemd/system/xray.service"
+SERVICE_PATH="/etc/systemd/system/youran.service"
 
-# 检查 xray 是否已经存在 
+#!/bin/bash
+
+# 检查 xray 是否已安装
+if command -v xray &> /dev/null; then
+    echo "检测到 xray 已安装。"
+
+    # 停止并禁用 xray 服务
+    echo "停止并禁用 xray 服务..."
+    systemctl stop xray
+    systemctl disable xray
+
+    # 删除 xray 可执行文件和服务文件
+    echo "删除 xray 可执行文件和服务文件..."
+    rm -f /usr/local/bin/xray
+    rm -f /etc/systemd/system/xray.service
+
+    # 删除配置文件夹
+    if [ -d /etc/xray ]; then
+        echo "删除 /etc/xray 文件夹..."
+        rm -rf /etc/xray
+    fi
+
+    if [ -d /usr/local/etc/xray ]; then
+        echo "删除 /usr/local/etc/xray 文件夹..."
+        rm -rf /usr/local/etc/xray
+    fi
+
+    # 重新加载 systemd
+    echo "重新加载 systemd 配置..."
+    systemctl daemon-reload
+
+    # 检查 xray 是否还在运行，如果在则强制终止
+    if pgrep -x "xray" > /dev/null; then
+        echo "xray 仍在运行，执行 killall..."
+        killall xray
+    else
+        echo "xray 已停止运行。"
+    fi
+else
+    echo "xray 未安装，无需操作。"
+fi
+
+
+# 检查 youran 是否已经存在 
 if [ -f "$PROGRAM_PATH" ]; then 
-  echo -e "${YELLOW}  xray 已存在，跳过下载。${NC}"
+  echo -e "${YELLOW}  youran 已存在，跳过下载。${NC}"
 else 
   # 下载程序 
-  echo -e "${BLUE} 正在下载 xray...${NC}"
-  curl -L -o xray "$PROGRAM_URL"
-  sudo mv xray "$PROGRAM_PATH"
+  echo -e "${BLUE} 正在下载 youran...${NC}"
+  curl -L -o youran "$PROGRAM_URL"
+  sudo mv youran "$PROGRAM_PATH"
   sudo chmod +x "$PROGRAM_PATH"
-  echo -e "${GREEN} xray 下载并配置完成！${NC}"
+  echo -e "${GREEN} youran 下载并配置完成！${NC}"
 fi 
 
 # 检查 geoip.dat 是否已经存在 
@@ -53,7 +96,7 @@ fi
 
 # 检查 geosite.dat 是否已经存在 
 if [ -f "$SERVICE_PATH" ]; then
-  echo -e "${YELLOW}xray.service 已存在，删除旧文件...${NC}"
+  echo -e "${YELLOW}youran.service 已存在，删除旧文件...${NC}"
   sudo rm -f "$SERVICE_PATH"
 else 
   # 下载程序 
@@ -64,21 +107,21 @@ else
   echo -e "${GREEN} geosite.dat 下载并配置完成！${NC}"
 fi 
 
-# 检查 xray.service 是否已经存在 
+# 检查 youran.service 是否已经存在 
 if [ -f "$SERVICE_PATH" ]; then 
-  echo -e "${YELLOW}  xray.service 已存在，跳过下载。${NC}"
+  echo -e "${YELLOW}  youran.service 已存在，跳过下载。${NC}"
 else 
   # 下载服务文件 
-  echo -e "${BLUE} 正在下载 xray.service...${NC}"
-  curl -L -o xray.service "$SERVICE_URL"
-  sudo mv xray.service "$SERVICE_PATH"
-  echo -e "${GREEN} xray.service 下载并配置完成！${NC}"
+  echo -e "${BLUE} 正在下载 youran.service...${NC}"
+  curl -L -o youran.service "$SERVICE_URL"
+  sudo mv youran.service "$SERVICE_PATH"
+  echo -e "${GREEN} youran.service 下载并配置完成！${NC}"
 fi 
 
-# 检查 /etc/xray 目录是否存在 
-if [ ! -d "/etc/xray" ]; then 
-  echo -e "${BLUE} 目录 /etc/xray 不存在，正在创建...${NC}"
-  sudo mkdir -p /etc/xray
+# 检查 /etc/youran 目录是否存在 
+if [ ! -d "/etc/youran" ]; then 
+  echo -e "${BLUE} 目录 /etc/youran 不存在，正在创建...${NC}"
+  sudo mkdir -p /etc/youran
   if [ $? -eq 0 ]; then 
     echo -e "${GREEN} 目录创建成功。${NC}"
   else 
@@ -86,19 +129,19 @@ if [ ! -d "/etc/xray" ]; then
     exit 1 
   fi 
 else 
-  echo -e "${YELLOW} 目录 /etc/xray 已存在。${NC}"
+  echo -e "${YELLOW} 目录 /etc/youran 已存在。${NC}"
 fi 
 
-# 检查 xray.json 是否存在，存在则删除 
-if [ -f "/etc/xray/xray.json" ]; then 
-  echo -e "${YELLOW}  xray.json 已存在，正在删除旧文件...${NC}"
-  sudo rm /etc/xray/xray.json
+# 检查 youran.json 是否存在，存在则删除 
+if [ -f "/etc/youran/youran.json" ]; then 
+  echo -e "${YELLOW}  youran.json 已存在，正在删除旧文件...${NC}"
+  sudo rm /etc/youran/youran.json
 fi 
 
 
-# 创建 xray.json 并写入内容 
-echo -e "${BLUE} 正在创建 xray.json 文件...${NC}"
-cat <<EOF | sudo tee /etc/xray/xray.json
+# 创建 youran.json 并写入内容 
+echo -e "${BLUE} 正在创建 youran.json 文件...${NC}"
+cat <<EOF | sudo tee /etc/youran/youran.json
 {
   "log": null,
   "routing": {
@@ -189,7 +232,7 @@ cat <<EOF | sudo tee /etc/xray/xray.json
 EOF
 
 if [ $? -eq 0 ]; then 
-  echo -e "${GREEN} xray.json 文件创建成功${NC}"
+  echo -e "${GREEN} youran.json 文件创建成功${NC}"
 else 
   echo -e "${RED} 文件创建失败，请检查权限。${NC}"
   exit 1 
@@ -200,12 +243,12 @@ echo -e "${BLUE} 重新加载 systemd 配置...${NC}"
 sudo systemctl daemon-reload 
 
 # 启动服务 
-echo -e " 正在启动 xray.service...${NC}"
-sudo systemctl restart xray.service 
+echo -e " 正在启动 youran.service...${NC}"
+sudo systemctl restart youran.service 
 
 # 设置服务开机自启动 
-sudo systemctl enable xray.service 
-echo -e "${GREEN} xray.service 设置为开机自启动。${NC}"
+sudo systemctl enable youran.service 
+echo -e "${GREEN} youran.service 设置为开机自启动。${NC}"
 
 
 # 提示完成 
