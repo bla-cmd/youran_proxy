@@ -9,7 +9,13 @@ error() {
     echo -e "\e[31m$1\e[0m"
 }
 
-# 0. 修改DNS设置
+info "======== 停止 systemd-resolved 服务 ========" 
+
+# 停止 systemd-resolved 服务
+systemctl stop systemd-resolved.service
+systemctl disable systemd-resolved.service
+
+# 修改DNS设置
 info "======== 修改DNS设置 ========"
 
 # 备份原有的resolv.conf文件
@@ -17,32 +23,17 @@ cp /etc/resolv.conf /etc/resolv.conf.bak
 
 # 写入新的DNS服务器
 cat > /etc/resolv.conf <<EOF
-nameserver 8.8.8.8
-nameserver 8.8.4.4
-nameserver 2001:4860:4860::8888
-nameserver 2001:4860:4860::8844
+nameserver 8.8.8.8 
+nameserver 8.8.4.4 
+nameserver 2001:4860:4860::8888 
+nameserver 2001:4860:4860::8844 
 EOF
 
-# 1. 开启IP转发
-
-info "======== 检查IP转发状态 ========"
-
-# 检查IP转发是否已开启
-if sysctl net.ipv4.ip_forward | grep -q '1'; then
-    info "IP转发已开启，无需添加设置"
-else
-    # 添加IP转发设置到 /etc/sysctl.conf
-    echo "net.ipv4.ip_forward=1" | tee -a /etc/sysctl.conf
-
-    if sysctl -w net.ipv4.ip_forward=1 && sysctl -p; then
-        info "IP转发已开启"
-    else
-        error "IP转发开启失败"
-    fi
-fi
+# 防止文件被还原
+chattr +i /etc/resolv.conf
 
 
-# 2. 判断系统防火墙并关闭
+# 判断系统防火墙并关闭
 info "======== 判断防火墙并关闭 ========"
 
 # 防火墙列表
@@ -73,13 +64,8 @@ else
     error "系统包信息更新失败"
 fi
 
-# 4. 安装vim和net-tools
-info "======== 安装vim和net-tools ========"
-if apt install -y vim net-tools; then
-    info "vim 和 net-tools 已安装"
-else
-    error "vim 和 net-tools 安装失败"
-fi
-
+# 更新包列表并安装软件
+info "======== 更新包列表并安装软件 ========" 
+apt update && apt install -y net-tools vim iperf3 speedtest-cli
 
 info "======== 脚本执行完毕 ========"
