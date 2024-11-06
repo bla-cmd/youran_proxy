@@ -66,6 +66,6 @@ fi
 
 # 更新包列表并安装软件
 info "======== 更新包列表并安装软件 ========" 
-apt update && apt install -y net-tools vim iperf3 speedtest-cli
+apt update && apt install -y net-tools vim iperf3 speedtest-cli unzip
 
 info "======== 脚本执行完毕 ========"
