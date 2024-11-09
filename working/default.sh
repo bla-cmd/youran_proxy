@@ -526,7 +526,7 @@ conn l2tp-psk-nonat # 另一个连接块，定义 L2TP-PSK 连接的具体设置
     rightprotoport=17/%any # 远程对端的协议和端口号，17 表示 UDP 协议，%any 表示可以接受任何远程端口号。
     dpddelay=60 # Dead Peer Detection (DPD) 的检测间隔时间，设置为 60 秒，每 60 秒发送一次检测包。
     dpdtimeout=60 # 如果 60 秒内没有收到远程对端的 DPD 响应，认为对端失联。
-    dpdaction=clear # 在检测到对端失联后，自动重启连接，确保连接可以自动恢复。
+    dpdaction=restart # 在检测到对端失联后，自动重启连接，确保连接可以自动恢复。
 EOF
 
     cat > /etc/ipsec.secrets <<EOF
