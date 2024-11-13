@@ -172,17 +172,6 @@ cat <<EOF | sudo tee /etc/youran/youran.json
   "dns": null,
   "inbounds": [
     {
-      "listen": "127.0.0.1",
-      "port": 62789,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "127.0.0.1"
-      },
-      "streamSettings": null,
-      "tag": "api",
-      "sniffing": null
-    },
-    {
       "listen": "0.0.0.0",
       "port": 1116,
       "protocol": "shadowsocks",
