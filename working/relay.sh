@@ -196,23 +196,30 @@ cat <<EOF | sudo tee /etc/youran/youran.json
         "enabled": true,
         "destOverride": ["http", "tls"]
       }
+    }，
+    {
+      "listen": null,
+      "port": 5555,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "$ip_address",
+        "port": 5555,
+        "network": "tcp,udp",
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          },
+        }
+      },
+      "tag": "inbound-5555",
+      "sniffing": {}
     }
   ],
   "outbounds": [
-  {
-    "protocol": "shadowsocks",
-    "settings": {
-      "servers": [
-        {
-          "address": "$ip_address",
-          "port": 1116,
-          "method": "aes-256-gcm",
-          "password": "112233"
-        }
-      ]
-    },
-    "tag": "proxy"
-  },
   {
     "protocol": "freedom",
     "settings": {}

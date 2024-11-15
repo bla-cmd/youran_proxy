@@ -1018,28 +1018,32 @@ config_content=$(cat <<EOF
       "tag": "api",
       "sniffing": null
     },
-    {
-  "listen": "0.0.0.0",
-  "port": 8090,
-  "protocol": "socks",
-  "settings": {
-    "auth": "password",
-    "accounts": [
-      {
-        "user": "admin",
-        "pass": "@youran12345"
-      }
-    ],
-    "udp": true,
-    "ip": "127.0.0.1",
-    "userLevel": 0
-  },
-  "streamSettings": null,
-  "tag": "inbound-socks",
-  "sniffing": {
-    "enabled": true,
-    "destOverride": ["http", "tls"]
-  }
+{
+
+    "listen": "0.0.0.0",
+    "port": 8090,
+    "protocol": "socks",
+    "settings": {
+
+        "auth": "password",
+        "accounts": [ {
+            "user": "admin",
+                "pass": "@youran12345"
+        }
+
+        ],
+        "udp": true,
+        "ip": "127.0.0.1",
+        "userLevel": 0
+    }
+
+    ,
+    "streamSettings": null,
+    "tag": "inbound-socks",
+    "sniffing": {
+        "enabled": true,
+            "destOverride": ["http", "tls"]
+    }
 }
   ],
   "outbounds": [
