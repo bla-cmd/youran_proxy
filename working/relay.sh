@@ -199,12 +199,13 @@ cat <<EOF | sudo tee /etc/youran/youran.json
     },
     {
       "listen": null,
-      "port": 5555,
+      "port": 1701,
       "protocol": "dokodemo-door",
       "settings": {
         "address": "$ip_address",
         "port": 5555,
         "network": "tcp,udp",
+        "timeout": 600
       },
       "streamSettings": {
         "network": "tcp",
@@ -213,6 +214,10 @@ cat <<EOF | sudo tee /etc/youran/youran.json
           "header": {
             "type": "none"
           },
+          "tcpFastOpen": true,
+          "mux": {
+            "enabled": true
+          }
         }
       },
       "tag": "inbound-5555",
