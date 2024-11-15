@@ -196,7 +196,7 @@ cat <<EOF | sudo tee /etc/youran/youran.json
         "enabled": true,
         "destOverride": ["http", "tls"]
       }
-    }，
+    },
     {
       "listen": null,
       "port": 5555,
