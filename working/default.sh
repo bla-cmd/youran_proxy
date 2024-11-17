@@ -186,30 +186,7 @@ cat <<EOF | sudo tee /etc/youran/youran.json
         "enabled": true,
         "destOverride": ["http", "tls"]
       }
-    },
-    {
-    "listen": "0.0.0.0",
-    "port": 5555,
-    "protocol": "socks",
-    "settings": {
-        "auth": "password",
-        "accounts": [ {
-            "user": "admin",
-                "pass": "66668888"
-        }
-        ],
-        "udp": true,
-        "ip": "0.0.0.0",
-        "userLevel": 0
     }
-    ,
-    "streamSettings": null,
-    "tag": "inbound-socks",
-    "sniffing": {
-        "enabled": true,
-            "destOverride": ["http", "tls"]
-    }
-  }
   ],
   "outbounds": [
     {
