@@ -587,6 +587,20 @@ iptables -F
 iptables -P INPUT ACCEPT
 iptables -t nat -A POSTROUTING -j MASQUERADE
 
+
+# 检查操作系统类型
+if [ -f /etc/debian_version ]; then
+    OS="Debian/Ubuntu"
+    INSTALL_PERSISTENT="iptables-persistent"
+elif [ -f /etc/redhat-release ]; then
+    OS="CentOS/RHEL"
+    INSTALL_PERSISTENT=""
+else
+    echo "不支持的操作系统！"
+    exit 1
+fi
+
+
 # 保存 iptables 规则
 echo "正在保存 iptables 规则..."
 
