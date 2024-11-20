@@ -587,6 +587,30 @@ iptables -F
 iptables -P INPUT ACCEPT
 iptables -t nat -A POSTROUTING -j MASQUERADE
 
+# 保存 iptables 规则
+echo "正在保存 iptables 规则..."
+
+if [[ "$OS" == "Debian/Ubuntu" ]]; then
+    # 在 Debian/Ubuntu 上安装 iptables-persistent 并保存规则
+    echo "操作系统检测为 $OS，使用 iptables-persistent 保存规则"
+    sudo apt update
+    sudo apt install -y iptables-persistent
+    sudo netfilter-persistent save
+    echo "iptables 规则已保存"
+    
+elif [[ "$OS" == "CentOS/RHEL" ]]; then
+    # 在 CentOS/RHEL 上保存 iptables 规则
+    echo "操作系统检测为 $OS，使用 iptables 服务保存规则"
+    sudo service iptables save
+    echo "iptables 规则已保存"
+
+    # 确保 iptables 在系统启动时自动加载
+    sudo systemctl enable iptables
+    sudo systemctl start iptables
+fi
+
+echo "iptables 规则设置并保存完毕。"
+
 echo "vpnuser1     l2tpd     hm123456     *" >> /etc/ppp/chap-secrets
 echo "root         l2tpd     hm123456     192.168.43.253" >> /etc/ppp/chap-secrets
 

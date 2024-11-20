@@ -1021,14 +1021,14 @@ config_content=$(cat <<EOF
 {
 
     "listen": "0.0.0.0",
-    "port": 8090,
+    "port": 5555,
     "protocol": "socks",
     "settings": {
 
         "auth": "password",
         "accounts": [ {
             "user": "admin",
-                "pass": "@youran12345"
+                "pass": "66668888"
         }
 
         ],
