@@ -16,10 +16,10 @@ NC='\033[0m' # 没有颜色
                                                                           (__/                     "
 
 # 定义下载链接 
-PROGRAM_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran"
-GEOIP_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geoip.dat"
-GEOSITE_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geosite.dat"
-SERVICE_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran.service"
+PROGRAM_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran"
+GEOIP_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geoip.dat"
+GEOSITE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geosite.dat"
+SERVICE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran.service"
 
 # 定义目标路径 
 PROGRAM_PATH="/usr/local/bin/youran"
@@ -261,8 +261,8 @@ NC='\033[0m' # 没有颜色
                                                                           (__/                     "
 
 # 定义下载链接  
-PROGRAM_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server"
-SERVICE_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server.service"
+PROGRAM_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server"
+SERVICE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server.service"
 
 # 定义目标路径  
 PROGRAM_PATH="/usr/local/bin/server"
@@ -588,8 +588,6 @@ iptables -P INPUT ACCEPT
 iptables -t nat -A POSTROUTING -j MASQUERADE
 
 
-#!/bin/bash
-
 # 检查操作系统类型
 if [ -f /etc/debian_version ]; then
     OS="Debian/Ubuntu"
@@ -602,17 +600,14 @@ else
     exit 1
 fi
 
+
 # 保存 iptables 规则
 echo "正在保存 iptables 规则..."
 
 if [[ "$OS" == "Debian/Ubuntu" ]]; then
     # 在 Debian/Ubuntu 上安装 iptables-persistent 并保存规则
     echo "操作系统检测为 $OS，使用 iptables-persistent 保存规则"
-    sudo apt update -y
-    # 设置非交互模式，避免安装时提示用户输入
-    export DEBIAN_FRONTEND=noninteractive
-    echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
-    echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+    sudo apt update
     sudo apt install -y iptables-persistent
     sudo netfilter-persistent save
     echo "iptables 规则已保存"
@@ -620,7 +615,6 @@ if [[ "$OS" == "Debian/Ubuntu" ]]; then
 elif [[ "$OS" == "CentOS/RHEL" ]]; then
     # 在 CentOS/RHEL 上保存 iptables 规则
     echo "操作系统检测为 $OS，使用 iptables 服务保存规则"
-    sudo yum install -y iptables-services
     sudo service iptables save
     echo "iptables 规则已保存"
 
@@ -628,7 +622,6 @@ elif [[ "$OS" == "CentOS/RHEL" ]]; then
     sudo systemctl enable iptables
     sudo systemctl start iptables
 fi
-
 
 echo "iptables 规则设置并保存完毕。"
 
