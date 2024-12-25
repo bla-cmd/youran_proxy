@@ -9,6 +9,9 @@ error() {
     echo -e "\e[31m$1\e[0m"
 }
 
+# 设置 DEBIAN_FRONTEND 为 noninteractive，避免任何交互提示
+export DEBIAN_FRONTEND=noninteractive
+
 info "======== 停止 systemd-resolved 服务 ========" 
 
 # 停止 systemd-resolved 服务

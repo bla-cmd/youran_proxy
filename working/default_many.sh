@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# 设置 DEBIAN_FRONTEND 为 noninteractive，避免任何交互提示
+export DEBIAN_FRONTEND=noninteractive
 # 定义颜色
 RED='\033[0;31m'
 GREEN='\033[0;32m'
