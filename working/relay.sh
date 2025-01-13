@@ -194,35 +194,90 @@ cat <<EOF | sudo tee /etc/youran/youran.json
       "tag": "inbound-ss",
       "sniffing": {
         "enabled": true,
-        "destOverride": ["http", "tls"]
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 5555,
+      "protocol": "socks",
+      "settings": {
+        "auth": "password",
+        "accounts": [
+          {
+            "user": "admin",
+            "pass": "66668888"
+          }
+        ],
+        "udp": true,
+        "ip": "0.0.0.0",
+        "userLevel": 0
+      },
+      "streamSettings": null,
+      "tag": "inbound-socks",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 5556,
+      "protocol": "http",
+      "settings": {
+        "auth": "password",
+        "accounts": [
+          {
+            "user": "admin",
+            "pass": "66668888"
+          }
+        ],
+        "udp": true,
+        "ip": "0.0.0.0",
+        "userLevel": 0
+      },
+      "streamSettings": null,
+      "tag": "inbound-http",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
       }
     }
   ],
   "outbounds": [
     {
-    "protocol": "shadowsocks",
-    "settings": {
-      "servers": [
-        {
-          "address": "$ip_address",
-          "port": 1116,
-          "method": "aes-256-gcm",
-          "password": "112233"
-        }
-      ]
+      "protocol": "shadowsocks",
+      "settings": {
+        "servers": [
+          {
+            "address": "$ip_address",
+            "port": 1116,
+            "method": "aes-256-gcm",
+            "password": "112233"
+          }
+        ]
+      },
+      "tag": "proxy"
     },
-    "tag": "proxy"
-  },
-  {
-    "protocol": "freedom",
-    "settings": {}
-  },
-  {
-    "protocol": "blackhole",
-    "settings": {},
-    "tag": "blocked"
-  }
-],
+    {
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
+    }
+  ],
   "transport": null,
   "policy": {
     "system": {
