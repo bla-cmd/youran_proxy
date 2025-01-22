@@ -17,10 +17,10 @@ NC='\033[0m' # 没有颜色
                                                                           (__/                     "
 
 # 定义下载链接 
-PROGRAM_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran"
-GEOIP_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geoip.dat"
-GEOSITE_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geosite.dat"
-SERVICE_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran.service"
+PROGRAM_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran"
+GEOIP_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geoip.dat"
+GEOSITE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/geosite.dat"
+SERVICE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/working/youran/youran.service"
 
 # 定义目标路径 
 PROGRAM_PATH="/usr/local/bin/youran"
@@ -262,8 +262,8 @@ echo -e "${GREEN} 下载和配置完成！${NC}"
 #                                                                          (__/                     "
 #
 ## 定义下载链接
-#PROGRAM_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server"
-#SERVICE_URL="https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server.service"
+#PROGRAM_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server"
+#SERVICE_URL="https://ghproxy.cn/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/udp2tcp/server/server.service"
 #
 ## 定义目标路径
 #PROGRAM_PATH="/usr/local/bin/server"
