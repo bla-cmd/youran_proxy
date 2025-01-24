@@ -31,7 +31,7 @@ SERVICE_PATH="/etc/systemd/system/youran.service"
 #!/bin/bash
 
 # 尝试自动获取公网IP地址
-ip_address=$(curl -s http://ifconfig.me)
+ip_address=$(curl -s http://iplark.com)
 if [[ $ip_address =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
   echo -e "${GREEN} 获取到的公网IP地址为：$ip_address${NC}"
 else
