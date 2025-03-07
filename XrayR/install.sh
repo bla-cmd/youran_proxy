@@ -181,7 +181,7 @@ install_XrayR() {
     if [[ ! -f /etc/XrayR/rulelist ]]; then
         cp rulelist /etc/XrayR/
     fi
-    curl -o /usr/bin/XrayR -Ls https://github.moeyy.xyz/https://raw.githubusercontent.com/YouRan_Proxy/master/XrayR/XrayR.sh
+    curl -o /usr/bin/XrayR -Ls https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/XrayR/XrayR.sh
     chmod +x /usr/bin/XrayR
     ln -s /usr/bin/XrayR /usr/bin/xrayr # 小写兼容
     chmod +x /usr/bin/xrayr

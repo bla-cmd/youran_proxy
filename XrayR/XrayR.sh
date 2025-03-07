@@ -270,7 +270,7 @@ install_bbr() {
 }
 
 update_shell() {
-    wget -O /usr/bin/XrayR -N --no-check-certificate https://github.moeyy.xyz/https://raw.githubusercontent.com/YouRan_Proxy/master/XrayR/XrayR.sh
+    wget -O /usr/bin/XrayR -N --no-check-certificate https://github.moeyy.xyz/https://raw.githubusercontent.com/bla-cmd/YouRan_Proxy/master/XrayR/XrayR.sh
     if [[ $? != 0 ]]; then
         echo ""
         echo -e "${red}下载脚本失败，请检查本机能否连接 Github${plain}"
